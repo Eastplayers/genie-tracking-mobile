@@ -159,41 +159,21 @@ class MobileTracker private constructor() {
             // Set brandId on ApiClient (web: line 133)
             this.apiClient?.setBrandId(brandId.toInt())
             
-            // Check for existing session: sessionId = apiClient.getSessionId()
-            var sessionId = this.apiClient?.getSessionId()
-            
-            if (this.config.debug) {
-                println("[MobileTracker] Existing session ID: ${sessionId ?: "none"}")
-            }
-            
-            // If no sessionId: create session via apiClient.createTrackingSession()
-            if (sessionId == null) {
-                if (this.config.debug) {
-                    println("[MobileTracker] Creating new tracking session...")
-                }
-                sessionId = this.apiClient?.createTrackingSession(brandId.toInt())
-                
-                if (this.config.debug) {
-                    println("[MobileTracker] Session created: ${if (sessionId != null) "success ($sessionId)" else "failed"}")
-                }
-                
-                // If session creation failed, throw an error
-                if (sessionId == null) {
-                    throw IllegalStateException("Failed to create tracking session - check network connectivity and API credentials")
-                }
-            }
-            
-            // Mark as initialized (web: line 136)
+            // Mark as initialized immediately to allow tracking to start (web: line 136)
             initialized = true
             
             if (this.config.debug) {
-                println("[MobileTracker] ✅ Marked as initialized")
-                println("[MobileTracker] Final session ID: ${this.apiClient?.getSessionId()}")
+                println("[MobileTracker] Fast initialization completed - creating session in background")
             }
             
             // Initialize background services async (web: lines 147-149)
             withContext(Dispatchers.Main) {
                 setupPageViewTracking()
+            }
+            
+            // Create session asynchronously in background (web: lines 184-218)
+            CoroutineScope(Dispatchers.IO).launch {
+                createSessionAsync()
             }
             
             if (this.config.debug) {
@@ -233,6 +213,45 @@ class MobileTracker private constructor() {
         // Basic validation - can be extended as needed
         if (config.apiUrl.isNullOrEmpty()) {
             throw IllegalArgumentException("API URL is required in configuration")
+        }
+    }
+    
+    /**
+     * Check if tracking operations are allowed based on consent
+     * Web Reference: tracker.ts lines 179-182
+     */
+    private fun isTrackingAllowed(): Boolean {
+        // For now, always return true
+        // In future, integrate with Android privacy APIs
+        return true
+    }
+    
+    /**
+     * Create tracking session asynchronously without blocking
+     * Web Reference: tracker.ts lines 184-218
+     */
+    private suspend fun createSessionAsync() {
+        val apiClient = apiClient ?: return
+        if (brandId.isEmpty()) return
+        
+        // Check for existing session
+        var sessionId = apiClient.getSessionId()
+        
+        if (sessionId == null) {
+            // Create new session in background
+            sessionId = apiClient.createTrackingSession(brandId.toInt())
+            
+            if (config.debug) {
+                println("[MobileTracker] Session created asynchronously: ${if (sessionId != null) "success" else "failed"}")
+            }
+            
+            // Flush any pending events now that session exists
+            if (sessionId != null && pendingTrackCalls.isNotEmpty()) {
+                flushPendingTrackCalls()
+                if (config.debug) {
+                    println("[MobileTracker] Flushed pending track calls after session creation")
+                }
+            }
         }
     }
     
@@ -281,20 +300,29 @@ class MobileTracker private constructor() {
         // Get sessionId from apiClient (web: line 299)
         val sessionId = apiClient?.getSessionId()
         
-        if (config.debug) {
-            println("[MobileTracker] Tracking event: $eventName (session: ${sessionId ?: "none"})")
-        }
+        // Get brandId from apiClient (web: line 300)
+        val brandId = apiClient?.getBrandId()
         
-        // If no sessionId, don't queue - this shouldn't happen if initialized properly
         if (sessionId == null) {
-            if (config.debug) {
-                println("[MobileTracker] ⚠️ Missing session ID - cannot track event: $eventName")
+            // Queue the event if session is missing but tracker is initialized (web: lines 302-309)
+            if (pendingTrackCalls.size < MAX_PENDING_EVENTS) {
+                pendingTrackCalls.add(Triple(eventName, attributes, metadata))
+                if (config.debug) {
+                    println("[MobileTracker] Missing session ID - queuing event: $eventName")
+                }
+            } else if (config.debug) {
+                println("[MobileTracker] ⚠️ Event queue full - dropping event: $eventName")
             }
             return
         }
         
-        // Get brandId from apiClient (web: line 317)
-        val brandId = apiClient?.getBrandId()
+        // Additional consent check for tracking (web: lines 311-316)
+        if (!isTrackingAllowed()) {
+            if (config.debug) {
+                println("[MobileTracker] Event blocked - consent not granted: $eventName")
+            }
+            return
+        }
         
         if (brandId == null) {
             if (config.debug) {
@@ -335,7 +363,7 @@ class MobileTracker private constructor() {
      * @param profileData User profile information
      */
     suspend fun identify(userId: String, profileData: Map<String, Any>? = null) {
-        // Check if initialized (web: lines 354-359)
+        // Check if initialized (web: lines 349-354)
         if (!initialized || apiClient == null) {
             if (config.debug) {
                 println("[MobileTracker] Not initialized. Call initialize() first.")
@@ -343,7 +371,15 @@ class MobileTracker private constructor() {
             return
         }
         
-        // Validate user_id is not empty (web: lines 369-374)
+        // Check consent before sending user data (web: lines 356-362)
+        if (!isTrackingAllowed()) {
+            if (config.debug) {
+                println("[MobileTracker] identify() blocked - consent not granted")
+            }
+            return
+        }
+        
+        // Validate user_id is not empty (web: lines 364-369)
         if (userId.isEmpty()) {
             if (config.debug) {
                 println("[MobileTracker] user_id is required for identify()")
@@ -351,7 +387,7 @@ class MobileTracker private constructor() {
             return
         }
         
-        // Call updateProfile() with combined data (web: lines 376-378)
+        // Call updateProfile() with combined data (web: lines 371-373)
         val data = profileData?.toMutableMap() ?: mutableMapOf()
         data["user_id"] = userId
         
@@ -365,7 +401,7 @@ class MobileTracker private constructor() {
      * @param profileData Profile data to update
      */
     suspend fun set(profileData: Map<String, Any>) {
-        // Check if initialized (web: lines 387-392)
+        // Check if initialized (web: lines 382-387)
         if (!initialized || apiClient == null) {
             if (config.debug) {
                 println("[MobileTracker] Not initialized. Call initialize() first.")
@@ -373,7 +409,15 @@ class MobileTracker private constructor() {
             return
         }
         
-        // Call updateProfile() with data (web: line 402)
+        // Check consent before sending user data (web: lines 389-395)
+        if (!isTrackingAllowed()) {
+            if (config.debug) {
+                println("[MobileTracker] set() blocked - consent not granted")
+            }
+            return
+        }
+        
+        // Call updateProfile() with data (web: line 397)
         updateProfile(profileData)
     }
     
@@ -400,6 +444,15 @@ class MobileTracker private constructor() {
         }
         
         try {
+            // Extract known fields (web: const { name, phone, ... } = data)
+            val knownFields = setOf(
+                "name", "phone", "gender", "business_domain", 
+                "metadata", "email", "source", "birthday", "user_id"
+            )
+            
+            // Extract extra fields (web: ...extra)
+            val extra = data.filterKeys { it !in knownFields }
+            
             // Convert map to UpdateProfileData
             val profileData = UpdateProfileData(
                 name = data["name"] as? String,
@@ -410,7 +463,8 @@ class MobileTracker private constructor() {
                 email = data["email"] as? String,
                 source = data["source"] as? String,
                 birthday = data["birthday"] as? String,
-                user_id = data["user_id"] as? String
+                user_id = data["user_id"] as? String,
+                extra = extra.takeIf { it.isNotEmpty() }
             )
             
             val success = apiClient?.updateProfile(profileData, brandId)
@@ -436,7 +490,7 @@ class MobileTracker private constructor() {
      * @param metadata Metadata object
      */
     suspend fun setMetadata(metadata: Map<String, Any>) {
-        // Check if initialized (web: lines 432-437)
+        // Check if initialized (web: lines 427-432)
         if (!initialized || apiClient == null) {
             if (config.debug) {
                 println("[MobileTracker] Not initialized. Call initialize() first.")
@@ -444,8 +498,16 @@ class MobileTracker private constructor() {
             return
         }
         
+        // Check consent before sending metadata (web: lines 434-440)
+        if (!isTrackingAllowed()) {
+            if (config.debug) {
+                println("[MobileTracker] setMetadata() blocked - consent not granted")
+            }
+            return
+        }
+        
         try {
-            // Get brandId from apiClient (web: lines 443-449)
+            // Get brandId from apiClient (web: lines 442-448)
             val brandId = apiClient?.getBrandId()
             if (brandId == null) {
                 if (config.debug) {
@@ -454,10 +516,10 @@ class MobileTracker private constructor() {
                 return
             }
             
-            // Call apiClient.setMetadata() (web: line 451)
+            // Call apiClient.setMetadata() (web: line 450)
             val success = apiClient?.setMetadata(metadata, brandId)
             
-            // Log success/error in debug mode (web: lines 453-459)
+            // Log success/error in debug mode (web: lines 452-458)
             if (config.debug) {
                 if (success == true) {
                     println("[MobileTracker] Metadata set successfully")

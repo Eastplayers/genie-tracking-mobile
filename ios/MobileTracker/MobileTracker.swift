@@ -161,31 +161,21 @@ import UIKit
                 self.apiClient?.setBrandId(brandIdInt)
             }
             
-            // Check for existing session: sessionId = apiClient.getSessionId()
-            var sessionId = self.apiClient?.getSessionId()
-            
-            // If no sessionId: create session via apiClient.createTrackingSession()
-            if sessionId == nil {
-                if let brandIdInt = Int(brandId) {
-                    sessionId = await self.apiClient?.createTrackingSession(brandIdInt)
-                    
-                    // If session creation failed, throw error
-                    if sessionId == nil {
-                        throw TrackerError.initializationFailed("Failed to create tracking session")
-                    }
-                }
-            }
-            
-            // Set initialized = true (web: line 136)
+            // Mark as initialized immediately to allow tracking to start (web: line 136)
             self.initialized = true
             
-            // Initialize background services async (web: lines 147-149)
+            if self.config.debug {
+                print("[MobileTracker] Fast initialization completed - loading session in background")
+            }
+            
+            // Initialize all background services without blocking (web: lines 147-149)
             Task {
                 await initializeBackgroundServices()
             }
             
-            if self.config.debug {
-                print("[MobileTracker] Initialization completed")
+            // Create session asynchronously in background (web: lines 179-218)
+            Task {
+                await createSessionAsync()
             }
         } catch {
             // Catch errors gracefully, never crash (web: lines 150-155)
@@ -230,6 +220,42 @@ import UIKit
         setupPageViewTracking()
     }
     
+    /// Check if tracking operations are allowed based on consent
+    /// Web Reference: tracker.ts lines 179-182
+    private func isTrackingAllowed() -> Bool {
+        // For now, always return true
+        // In future, integrate with iOS App Tracking Transparency
+        return true
+    }
+    
+    /// Create tracking session asynchronously without blocking
+    /// Web Reference: tracker.ts lines 184-218
+    private func createSessionAsync() async {
+        guard let apiClient = apiClient, !brandId.isEmpty else { return }
+        
+        // Check for existing session
+        var sessionId = apiClient.getSessionId()
+        
+        if sessionId == nil {
+            // Create new session in background
+            if let brandIdInt = Int(brandId) {
+                sessionId = await apiClient.createTrackingSession(brandIdInt)
+                
+                if config.debug {
+                    print("[MobileTracker] Session created asynchronously: \(sessionId != nil ? "success" : "failed")")
+                }
+                
+                // Flush any pending events now that session exists
+                if sessionId != nil && !pendingTrackCalls.isEmpty {
+                    await flushPendingTrackCalls()
+                    if config.debug {
+                        print("[MobileTracker] Flushed pending track calls after session creation")
+                    }
+                }
+            }
+        }
+    }
+    
     /// Track an event with optional attributes and metadata
     /// Web Reference: tracker.ts lines 280-346
     /// - Parameters:
@@ -267,24 +293,38 @@ import UIKit
         }
         
         // Get sessionId from apiClient (web: line 299)
-        guard let sessionId = apiClient.getSessionId() else {
-            // If no sessionId, don't queue - this shouldn't happen if initialized properly
-            if config.debug {
-                print("[MobileTracker] ⚠️ Missing session ID - cannot track event: \(eventName)")
+        let sessionId = apiClient.getSessionId()
+        
+        // Get brandId from apiClient (web: line 300)
+        let brandId = apiClient.getBrandId()
+        
+        if sessionId == nil {
+            // Queue the event if session is missing but tracker is initialized (web: lines 302-309)
+            if pendingTrackCalls.count < MAX_PENDING_EVENTS {
+                pendingTrackCalls.append((eventName, attributes, metadata))
+                if config.debug {
+                    print("[MobileTracker] Missing session ID - queuing event: \(eventName)")
+                }
+            } else if config.debug {
+                print("[MobileTracker] ⚠️ Event queue full - dropping event: \(eventName)")
             }
             return
         }
         
-        // Get brandId from apiClient (web: line 317)
-        guard let brandId = apiClient.getBrandId() else {
+        // Additional consent check for tracking (web: lines 311-316)
+        if !isTrackingAllowed() {
             if config.debug {
-                print("[MobileTracker] ⚠️ Missing brand ID")
+                print("[MobileTracker] Event blocked - consent not granted: \(eventName)")
             }
             return
         }
         
-        if config.debug {
-            print("[MobileTracker] Using brand ID: \(brandId) for event: \(eventName)")
+        guard let sessionId = sessionId else { return }
+        guard let brandId = brandId else {
+            if config.debug {
+                print("[MobileTracker] Missing brand ID")
+            }
+            return
         }
         
         // Merge attributes and metadata (web: line 323)
@@ -297,14 +337,20 @@ import UIKit
         }
         
         // Call apiClient.trackEvent() (web: line 326)
-        let success = await apiClient.trackEvent(brandId, sessionId: sessionId, eventName: eventName, eventData: eventData.isEmpty ? nil : eventData)
-        
-        // Log success/error in debug mode (web: lines 328-334)
-        if config.debug {
-            if success {
-                print("[MobileTracker] ✅ Event tracked: \(eventName)")
-            } else {
-                print("[MobileTracker] ❌ Error tracking event: \(eventName)")
+        do {
+            let success = await apiClient.trackEvent(brandId, sessionId: sessionId, eventName: eventName, eventData: eventData.isEmpty ? nil : eventData)
+            
+            // Log success/error in debug mode (web: lines 328-334)
+            if config.debug {
+                if success {
+                    print("[MobileTracker] Event tracked: \(eventName), \(attributes ?? [:])")
+                } else {
+                    print("[MobileTracker] Error tracking event: \(eventName)")
+                }
+            }
+        } catch {
+            if config.debug {
+                print("[MobileTracker] Error tracking event: \(error)")
             }
         }
     }
@@ -317,7 +363,7 @@ import UIKit
     ///   - userId: Unique user identifier
     ///   - profileData: User profile information
     public func identify(userId: String, profileData: [String: Any]? = nil) async {
-        // Check if initialized (web: lines 354-359)
+        // Check if initialized (web: lines 349-354)
         guard initialized, apiClient != nil else {
             if config.debug {
                 print("[MobileTracker] Not initialized. Call initialize() first.")
@@ -325,7 +371,15 @@ import UIKit
             return
         }
         
-        // Validate user_id is not empty (web: lines 369-374)
+        // Check consent before sending user data (web: lines 356-362)
+        if !isTrackingAllowed() {
+            if config.debug {
+                print("[MobileTracker] identify() blocked - consent not granted")
+            }
+            return
+        }
+        
+        // Validate user_id is not empty (web: lines 364-369)
         guard !userId.isEmpty else {
             if config.debug {
                 print("[MobileTracker] user_id is required for identify()")
@@ -333,10 +387,14 @@ import UIKit
             return
         }
         
-        // Call updateProfile() with combined data (web: lines 376-378)
-        var data = profileData ?? [:]
-        data["user_id"] = userId
-        await updateProfile(data: data)
+        // Call updateProfile() with combined data (web: lines 371-373)
+        if let profileData = profileData {
+            var data = profileData
+            data["user_id"] = userId
+            await updateProfile(data: data)
+        } else {
+            await updateProfile(data: ["user_id": userId])
+        }
     }
     
 
@@ -345,7 +403,7 @@ import UIKit
     /// Web Reference: tracker.ts lines 381-403
     /// - Parameter profileData: Profile data to update
     public func set(profileData: [String: Any]) async {
-        // Check if initialized (web: lines 387-392)
+        // Check if initialized (web: lines 382-387)
         guard initialized, apiClient != nil else {
             if config.debug {
                 print("[MobileTracker] Not initialized. Call initialize() first.")
@@ -353,7 +411,15 @@ import UIKit
             return
         }
         
-        // Call updateProfile() with data (web: line 402)
+        // Check consent before sending user data (web: lines 389-395)
+        if !isTrackingAllowed() {
+            if config.debug {
+                print("[MobileTracker] set() blocked - consent not granted")
+            }
+            return
+        }
+        
+        // Call updateProfile() with data (web: line 397)
         await updateProfile(data: profileData)
     }
     
@@ -400,7 +466,7 @@ import UIKit
     /// Web Reference: tracker.ts lines 426-461
     /// - Parameter metadata: Metadata object
     public func setMetadata(_ metadata: [String: Any]) async {
-        // Check if initialized (web: lines 432-437)
+        // Check if initialized (web: lines 427-432)
         guard initialized, let apiClient = apiClient else {
             if config.debug {
                 print("[MobileTracker] Not initialized. Call initialize() first.")
@@ -408,7 +474,15 @@ import UIKit
             return
         }
         
-        // Get brandId from apiClient (web: lines 443-449)
+        // Check consent before sending metadata (web: lines 434-440)
+        if !isTrackingAllowed() {
+            if config.debug {
+                print("[MobileTracker] setMetadata() blocked - consent not granted")
+            }
+            return
+        }
+        
+        // Get brandId from apiClient (web: lines 442-448)
         guard let brandId = apiClient.getBrandId() else {
             if config.debug {
                 print("[MobileTracker] No brand_id available")
@@ -416,17 +490,21 @@ import UIKit
             return
         }
         
-        // Call apiClient.setMetadata() (web: line 451)
+        // Call apiClient.setMetadata() (web: line 450)
         do {
             let success = await apiClient.setMetadata(metadata, brandId: brandId)
             
-            // Log success/error in debug mode (web: lines 453-459)
+            // Log success/error in debug mode (web: lines 452-458)
             if config.debug {
                 if success {
                     print("[MobileTracker] Metadata set successfully")
                 } else {
                     print("[MobileTracker] Error setting metadata")
                 }
+            }
+        } catch {
+            if config.debug {
+                print("[MobileTracker] Error setting metadata: \(error)")
             }
         }
     }
@@ -446,7 +524,7 @@ import UIKit
     @objc public func reset(all: Bool = false) {
         guard let apiClient = apiClient else { return }
         
-        // Clear storage: session_id, device_id, session_email, identify_id (web: lines 469-479)
+        // Clear all tracking cookies (web: lines 469-479)
         let cookiesToClear = ["session_id", "device_id", "session_email", "identify_id"]
         
         // If all=true, also clear brand_id (web: lines 470-472)
@@ -455,10 +533,10 @@ import UIKit
             allCookies.append("brand_id")
         }
         
-        // Clear cookies using the storage manager through ApiClient
-        // Note: We need to access the storage manager, but it's private in ApiClient
-        // For now, we'll use the clearAllTrackingCookies method
-        apiClient.clearAllTrackingCookies()
+        // Clear each cookie individually (web: lines 473-477)
+        for cookie in allCookies {
+            apiClient.clearCookieByName(cookie)
+        }
         
         // Clear file backup items with brand prefix (web: lines 482-489)
         // This is handled by the StorageManager's clear() method

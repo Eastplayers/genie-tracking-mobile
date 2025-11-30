@@ -411,6 +411,7 @@ class ApiClient(
             }
             
             // Build payload matching web structure
+            // Web Reference: api.ts lines 390-407
             val payload = buildJsonObject {
                 data.email?.let { put("email", JsonPrimitive(it)) }
                 data.name?.let { put("name", JsonPrimitive(it)) }
@@ -425,12 +426,52 @@ class ApiClient(
                                 is String -> put(key, JsonPrimitive(value))
                                 is Number -> put(key, JsonPrimitive(value))
                                 is Boolean -> put(key, JsonPrimitive(value))
+                                is Map<*, *> -> put(key, buildJsonObject {
+                                    value.forEach { (k, v) ->
+                                        when (v) {
+                                            is String -> put(k.toString(), JsonPrimitive(v))
+                                            is Number -> put(k.toString(), JsonPrimitive(v))
+                                            is Boolean -> put(k.toString(), JsonPrimitive(v))
+                                            else -> put(k.toString(), JsonPrimitive(v.toString()))
+                                        }
+                                    }
+                                })
+                                is List<*> -> put(key, buildJsonArray {
+                                    value.forEach { item ->
+                                        when (item) {
+                                            is String -> add(JsonPrimitive(item))
+                                            is Number -> add(JsonPrimitive(item))
+                                            is Boolean -> add(JsonPrimitive(item))
+                                            else -> add(JsonPrimitive(item.toString()))
+                                        }
+                                    }
+                                })
                                 else -> put(key, JsonPrimitive(value.toString()))
                             }
                         }
                     })
                 }
                 data.source?.let { put("source", JsonPrimitive(it)) }
+                
+                // Add extra fields (web: ...extra)
+                data.extra?.forEach { (key, value) ->
+                    when (value) {
+                        is String -> put(key, JsonPrimitive(value))
+                        is Number -> put(key, JsonPrimitive(value))
+                        is Boolean -> put(key, JsonPrimitive(value))
+                        is Map<*, *> -> put(key, buildJsonObject {
+                            value.forEach { (k, v) ->
+                                when (v) {
+                                    is String -> put(k.toString(), JsonPrimitive(v))
+                                    is Number -> put(k.toString(), JsonPrimitive(v))
+                                    is Boolean -> put(k.toString(), JsonPrimitive(v))
+                                    else -> put(k.toString(), JsonPrimitive(v.toString()))
+                                }
+                            }
+                        })
+                        else -> put(key, JsonPrimitive(value.toString()))
+                    }
+                }
                 
                 put("brand_id", JsonPrimitive(brandId))
                 userId?.let { put("user_id", JsonPrimitive(it)) }
@@ -494,6 +535,26 @@ class ApiClient(
                             is String -> put(key, JsonPrimitive(value))
                             is Number -> put(key, JsonPrimitive(value))
                             is Boolean -> put(key, JsonPrimitive(value))
+                            is Map<*, *> -> put(key, buildJsonObject {
+                                value.forEach { (k, v) ->
+                                    when (v) {
+                                        is String -> put(k.toString(), JsonPrimitive(v))
+                                        is Number -> put(k.toString(), JsonPrimitive(v))
+                                        is Boolean -> put(k.toString(), JsonPrimitive(v))
+                                        else -> put(k.toString(), JsonPrimitive(v.toString()))
+                                    }
+                                }
+                            })
+                            is List<*> -> put(key, buildJsonArray {
+                                value.forEach { item ->
+                                    when (item) {
+                                        is String -> add(JsonPrimitive(item))
+                                        is Number -> add(JsonPrimitive(item))
+                                        is Boolean -> add(JsonPrimitive(item))
+                                        else -> add(JsonPrimitive(item.toString()))
+                                    }
+                                }
+                            })
                             else -> put(key, JsonPrimitive(value.toString()))
                         }
                     }
@@ -831,7 +892,8 @@ data class UpdateProfileData(
     val email: String? = null,
     val source: String? = null,
     val birthday: String? = null,
-    val user_id: String? = null
+    val user_id: String? = null,
+    val extra: Map<String, Any>? = null  // Support for additional custom fields (web: ...extra)
 )
 
 /**

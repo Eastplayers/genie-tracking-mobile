@@ -56,6 +56,12 @@ class ApiClient {
         storage.remove(key: name)
     }
     
+    /// Clear a specific cookie by name (public interface for reset)
+    /// Web Reference: api.ts lines 107-130
+    func clearCookieByName(_ name: String, domain: String? = nil) {
+        clearCookie(name, domain: domain)
+    }
+    
     /// Clear all tracking cookies and storage
     /// Web Reference: api.ts lines 132-148
     func clearAllTrackingCookies() {

@@ -17,13 +17,13 @@ The SDK provides three main capabilities: event tracking, user identification, a
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    React Native Layer                        │
+│                    React Native Layer                       │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │         MobileTracker JavaScript Module                 │ │
-│  │  - init(config)                                         │ │
-│  │  - track(event, properties)                             │ │
-│  │  - identify(userId, traits)                             │ │
-│  │  - screen(name, properties)                             │ │
+│  │         MobileTracker JavaScript Module                │ │
+│  │  - init(config)                                        │ │
+│  │  - track(event, properties)                            │ │
+│  │  - identify(userId, traits)                            │ │
+│  │  - screen(name, properties)                            │ │
 │  └────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
                             │
