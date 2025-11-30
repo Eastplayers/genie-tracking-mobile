@@ -21,6 +21,23 @@ This is a simple Android example application demonstrating how to use the Mobile
 3. Select the example app configuration
 4. Build and run the app on an emulator or device
 
+### Dependency Modes
+
+This example app supports two dependency modes for the MobileTracker SDK:
+
+- **Local Project Mode** (default): Uses `implementation project(':android')` for active development
+- **Maven Dependency Mode**: Uses `implementation 'ai.founderos:mobile-tracking-sdk:0.1.0'` to test the published library
+
+**Quick switch:**
+
+```properties
+# In gradle.properties
+USE_LOCAL_SDK=true   # Local project mode (development)
+USE_LOCAL_SDK=false  # Maven dependency mode (testing published library)
+```
+
+For detailed publishing and testing instructions, see [../../android/PUBLISHING_GUIDE.md](../../android/PUBLISHING_GUIDE.md).
+
 ## Usage
 
 ### Initialize

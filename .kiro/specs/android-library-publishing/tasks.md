@@ -7,7 +7,7 @@
   - Define library metadata (groupId, artifactId, version)
   - _Requirements: 1.1, 1.2_
 
-- [ ] 2. Configure POM metadata
+- [x] 2. Configure POM metadata
 
   - Add library name, description, and URL
   - Configure license information (MIT)
@@ -15,36 +15,38 @@
   - Add SCM (source control management) URLs
   - _Requirements: 2.3_
 
-- [ ] 3. Set up local Maven publishing
+- [x] 3. Set up local Maven publishing
 
   - Configure mavenLocal() repository
   - Create publishToMavenLocal task
   - Test publishing to ~/.m2/repository
   - _Requirements: 4.1, 4.2, 4.4_
 
-- [ ] 4. Create test consumer project
+- [x] 4. Configure test consumer project
 
-  - Create a simple Android app in a separate directory
-  - Add mavenLocal() repository
-  - Add dependency on published library
-  - Verify library classes are accessible
+  - Use existing examples/android project as test consumer
+  - Add mavenLocal() repository to build.gradle
+  - Add gradle.properties flag to switch between project reference and Maven dependency
+  - Update build.gradle to support both: `implementation project(':android')` and `implementation 'ai.founderos:mobile-tracking-sdk:0.1.0'`
+  - Test with Maven dependency and verify library classes are accessible
+  - Document how to switch between local project and published library modes
   - _Requirements: 4.5_
 
-- [ ] 5. Configure sources and javadoc JARs
+- [x] 5. Configure sources and javadoc JARs
 
   - Add task to generate sources JAR
   - Add task to generate javadoc JAR
   - Include both JARs in publication
   - _Requirements: 1.3_
 
-- [ ] 6. Set up JitPack compatibility
+- [x] 6. Set up JitPack compatibility
 
   - Ensure group and version are properly configured
   - Create jitpack.yml with JDK configuration
   - Add JitPack badge to README
   - _Requirements: 3.3_
 
-- [ ] 7. Create version management system
+- [x] 7. Create version management system
 
   - Extract version to gradle.properties
   - Create version validation

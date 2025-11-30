@@ -18,9 +18,18 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()  // For testing locally published library
     }
 }
 
 rootProject.name = 'MobileTrackerExample'
-include ':android'
-project(':android').projectDir = new File(rootProject.projectDir, '../../android')
+
+// Only include the android project if using local SDK mode
+def useLocalSdk = settings.ext.find('USE_LOCAL_SDK') != null ? 
+    settings.ext.USE_LOCAL_SDK : 
+    (project.hasProperty('USE_LOCAL_SDK') ? project.property('USE_LOCAL_SDK').toBoolean() : true)
+
+if (useLocalSdk) {
+    include ':android'
+    project(':android').projectDir = new File(rootProject.projectDir, '../../android')
+}

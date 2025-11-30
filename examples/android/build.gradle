@@ -38,8 +38,18 @@ android {
 }
 
 dependencies {
-    // MobileTracker SDK
-    implementation project(':android')
+    // MobileTracker SDK - switches between local project and Maven dependency
+    // Configure in gradle.properties: USE_LOCAL_SDK=true/false
+    def useLocalSdk = project.hasProperty('USE_LOCAL_SDK') ? 
+        project.property('USE_LOCAL_SDK').toBoolean() : true
+    
+    if (useLocalSdk) {
+        // Local project reference for development
+        implementation project(':android')
+    } else {
+        // Published Maven dependency for testing published library
+        implementation 'ai.founderos:mobile-tracking-sdk:0.1.0'
+    }
     
     // Kotlin
     implementation 'androidx.core:core-ktx:1.12.0'

@@ -1,5 +1,7 @@
 # Mobile Tracking SDK
 
+[![](https://jitpack.io/v/founderos/mobile-tracking-sdk.svg)](https://jitpack.io/#founderos/mobile-tracking-sdk)
+
 A cross-platform analytics and event tracking SDK for iOS, Android, and React Native applications. The SDK provides simple, reliable event tracking with automatic context enrichment, user identification, session management, and screen tracking capabilities.
 
 ## Features
@@ -52,23 +54,35 @@ dependencies: [
 
 ### Android (Gradle)
 
+#### Option 1: JitPack (Recommended)
+
+Add the JitPack repository to your project's `build.gradle` or `settings.gradle`:
+
+```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
+
+Add the dependency to your app's `build.gradle`:
+
+```gradle
+dependencies {
+    implementation 'com.github.founderos:mobile-tracking-sdk:0.1.0'
+}
+```
+
+#### Option 2: Maven Central
+
 Add to your app's `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation 'com.mobiletracker:mobile-tracking-sdk:0.1.0'
+    implementation 'ai.founderos:mobile-tracking-sdk:0.1.0'
 }
 ```
 
-Add the Maven repository in your project's `build.gradle` or `settings.gradle`:
-
-```gradle
-repositories {
-    mavenCentral()
-    // Or your custom repository
-    maven { url 'https://your-maven-repo.com/releases' }
-}
-```
+Maven Central repository is included by default in most Android projects.
 
 ### React Native
 
@@ -656,6 +670,17 @@ mobile-tracking-sdk/
 │
 └── package.json                 # Root package configuration
 ```
+
+## Version Management
+
+The library follows [Semantic Versioning 2.0.0](https://semver.org/). For detailed information about version management, including:
+
+- Version format and validation
+- When to increment MAJOR, MINOR, or PATCH versions
+- Pre-release and build metadata guidelines
+- Version update workflow
+
+See [android/VERSION_MANAGEMENT.md](./android/VERSION_MANAGEMENT.md) for the complete guide.
 
 ## Development
 

@@ -5,6 +5,10 @@ plugins {
     id 'maven-publish'
 }
 
+// JitPack requires group and version at project level
+group = GROUP
+version = VERSION_NAME
+
 android {
     namespace 'ai.founderos.mobiletracker'
     compileSdk 34
@@ -44,6 +48,13 @@ android {
             java.srcDirs += 'src/test/java'
         }
     }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
@@ -73,6 +84,37 @@ dependencies {
 
 
 
+// Version Validation Task
+task validateVersion {
+    doLast {
+        def version = VERSION_NAME
+        def semanticVersionPattern = ~/^\d+\.\d+\.\d+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$/
+        
+        if (!version) {
+            throw new GradleException("VERSION_NAME is not defined in gradle.properties")
+        }
+        
+        if (!version.matches(semanticVersionPattern)) {
+            throw new GradleException(
+                "VERSION_NAME '$version' does not follow semantic versioning format.\n" +
+                "Expected format: MAJOR.MINOR.PATCH[-PRERELEASE][+BUILD]\n" +
+                "Examples: 1.0.0, 1.0.0-alpha, 1.0.0-beta.1, 1.0.0+20130313144700"
+            )
+        }
+        
+        println "✓ Version validation passed: $version"
+    }
+}
+
+// Run version validation before publishing
+tasks.withType(PublishToMavenRepository) {
+    dependsOn validateVersion
+}
+
+tasks.withType(PublishToMavenLocal) {
+    dependsOn validateVersion
+}
+
 // Maven Publishing Configuration
 afterEvaluate {
     publishing {
@@ -84,8 +126,41 @@ afterEvaluate {
                 artifactId = ARTIFACT_ID
                 version = VERSION_NAME
                 
+                // Sources and javadoc JARs are automatically included via android.publishing configuration
                 // The AAR artifact is automatically included from components.release
+                
+                pom {
+                    name = 'Mobile Tracking SDK'
+                    description = 'A cross-platform mobile tracking SDK for Android that provides event tracking, user analytics, and session management capabilities.'
+                    url = 'https://github.com/founderos/mobile-tracking-sdk'
+                    
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://opensource.org/licenses/MIT'
+                            distribution = 'repo'
+                        }
+                    }
+                    
+                    developers {
+                        developer {
+                            id = 'founderos'
+                            name = 'FounderOS Team'
+                            email = 'dev@founderos.ai'
+                        }
+                    }
+                    
+                    scm {
+                        connection = 'scm:git:git://github.com/founderos/mobile-tracking-sdk.git'
+                        developerConnection = 'scm:git:ssh://github.com/founderos/mobile-tracking-sdk.git'
+                        url = 'https://github.com/founderos/mobile-tracking-sdk'
+                    }
+                }
             }
+        }
+        
+        repositories {
+            mavenLocal()
         }
     }
 }
