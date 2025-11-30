@@ -1,8 +1,8 @@
-package com.mobiletracker
+package ai.founderos.mobiletracker
 
-import com.mobiletracker.models.Event
-import com.mobiletracker.models.EventContext
-import com.mobiletracker.models.JsonElement
+import ai.founderos.mobiletracker.models.Event
+import ai.founderos.mobiletracker.models.EventContext
+import ai.founderos.mobiletracker.models.JsonElement
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.decodeFromString

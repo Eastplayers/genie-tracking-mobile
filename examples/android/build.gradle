@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.mobiletracker.example'
+    namespace 'ai.founderos.mobiletracker.example'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.mobiletracker.example"
+        applicationId "ai.founderos.mobiletracker.example"
         minSdk 21
         targetSdk 34
         versionCode 1

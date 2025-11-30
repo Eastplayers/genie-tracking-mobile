@@ -1,7 +1,7 @@
-package com.mobiletracker
+package ai.founderos.mobiletracker
 
-import com.mobiletracker.models.Event
-import com.mobiletracker.models.EventContext
+import ai.founderos.mobiletracker.models.Event
+import ai.founderos.mobiletracker.models.EventContext
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.mobiletracker
+package ai.founderos.mobiletracker
 
 import android.app.Activity
 import android.app.Application

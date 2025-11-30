@@ -2,10 +2,11 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.20'
+    id 'maven-publish'
 }
 
 android {
-    namespace 'com.mobiletracker'
+    namespace 'ai.founderos.mobiletracker'
     compileSdk 34
 
     defaultConfig {
@@ -71,3 +72,20 @@ dependencies {
 }
 
 
+
+// Maven Publishing Configuration
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                
+                groupId = GROUP
+                artifactId = ARTIFACT_ID
+                version = VERSION_NAME
+                
+                // The AAR artifact is automatically included from components.release
+            }
+        }
+    }
+}

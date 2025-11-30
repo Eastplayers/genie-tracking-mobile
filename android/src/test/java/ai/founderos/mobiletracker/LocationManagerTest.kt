@@ -1,4 +1,4 @@
-package com.mobiletracker
+package ai.founderos.mobiletracker
 
 import android.Manifest
 import android.content.Context

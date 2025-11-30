@@ -1,4 +1,4 @@
-package com.mobiletracker.example
+package ai.founderos.mobiletracker.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mobiletracker.MobileTracker
+import ai.founderos.mobiletracker.MobileTracker
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                 MobileTracker.getInstance().initialize(
                     context = applicationContext,
                     brandId = brandId,
-                    config = com.mobiletracker.TrackerConfig(
+                    config = ai.founderos.mobiletracker.TrackerConfig(
                         debug = true,
                         apiUrl = apiUrl,
                         xApiKey = apiKey

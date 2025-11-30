@@ -1,4 +1,4 @@
-package com.mobiletracker
+package ai.founderos.mobiletracker
 
 /**
  * Configuration storage for the Mobile Tracking SDK

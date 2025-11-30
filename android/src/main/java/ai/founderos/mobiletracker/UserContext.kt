@@ -1,4 +1,4 @@
-package com.mobiletracker
+package ai.founderos.mobiletracker
 
 /**
  * User context management for storing user identification data

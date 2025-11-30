@@ -1,6 +1,6 @@
-package com.mobiletracker
+package ai.founderos.mobiletracker
 
-import com.mobiletracker.models.Event
+import ai.founderos.mobiletracker.models.Event
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.Call

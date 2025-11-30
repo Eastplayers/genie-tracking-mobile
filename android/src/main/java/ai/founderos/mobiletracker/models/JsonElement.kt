@@ -1,4 +1,4 @@
-package com.mobiletracker.models
+package ai.founderos.mobiletracker.models
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
