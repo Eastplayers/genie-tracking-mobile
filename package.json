@@ -1,0 +1,26 @@
+{
+  "name": "mobile-tracking-sdk",
+  "version": "0.1.0",
+  "description": "Cross-platform mobile tracking SDK for iOS, Android, and React Native",
+  "private": true,
+  "workspaces": [
+    "react-native"
+  ],
+  "scripts": {
+    "test": "npm run test:ios && npm run test:android && npm run test:react-native",
+    "test:ios": "cd ios && xcodebuild test -scheme MobileTracker -destination 'platform=iOS Simulator,name=iPhone 14'",
+    "test:android": "cd android && ./gradlew test propertyTest",
+    "test:react-native": "cd react-native && npm test"
+  },
+  "keywords": [
+    "analytics",
+    "tracking",
+    "mobile",
+    "ios",
+    "android",
+    "react-native"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "devDependencies": {}
+}

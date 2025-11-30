@@ -1,0 +1,87 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# iOS
+ios/build/
+ios/.build/
+ios/Pods/
+ios/.DS_Store
+ios/xcuserdata/
+examples/ios/build/
+examples/ios/.build/
+examples/ios/Pods/
+examples/ios/.DS_Store
+examples/ios/xcuserdata/
+react-native/ios/build/
+react-native/ios/.build/
+react-native/ios/Pods/
+react-native/ios/.DS_Store
+react-native/ios/xcuserdata/
+examples/react-native/ios/build/
+examples/react-native/ios/.build/
+examples/react-native/ios/Pods/
+examples/react-native/ios/.DS_Store
+examples/react-native/ios/xcuserdata/
+*.xcworkspace
+!default.xcworkspace
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Android
+android/build/
+android/.gradle/
+android/local.properties
+android/.idea/
+android/.kotlin/
+android/*.iml
+examples/android/build/
+examples/android/.gradle/
+examples/android/local.properties
+examples/android/.idea/
+examples/android/.kotlin/
+examples/android/*.iml
+*.apk
+*.aab
+
+# React Native
+react-native/lib/
+react-native/node_modules/
+react-native/coverage/
+examples/react-native/lib/
+examples/react-native/node_modules/
+examples/react-native/coverage/
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+out/
