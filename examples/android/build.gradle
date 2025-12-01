@@ -14,6 +14,23 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+        
+        // Load environment variables from local.env file
+        def envFile = project.file('local.env')
+        if (envFile.exists()) {
+            envFile.readLines().each { line ->
+                def (key, value) = line.split('=', 2)
+                if (key && value && !key.startsWith('#')) {
+                    buildConfigField "String", key.trim(), "\"${value.trim()}\""
+                }
+            }
+        } else {
+            // Fallback to system environment variables or gradle properties
+            buildConfigField "String", "BRAND_ID", "\"${System.getenv('BRAND_ID') ?: project.findProperty('BRAND_ID') ?: ''}\""
+            buildConfigField "String", "API_URL", "\"${System.getenv('API_URL') ?: project.findProperty('API_URL') ?: ''}\""
+            buildConfigField "String", "X_API_KEY", "\"${System.getenv('X_API_KEY') ?: project.findProperty('X_API_KEY') ?: ''}\""
+            buildConfigField "String", "DEBUG", "\"${System.getenv('DEBUG') ?: project.findProperty('DEBUG') ?: 'false'}\""
+        }
     }
 
     buildTypes {
@@ -34,6 +51,7 @@ android {
     
     buildFeatures {
         compose true
+        buildConfig true
     }
 }
 

@@ -158,12 +158,7 @@ class ApiClient {
                 "brand_id": brandId
             ]
             
-            guard let apiUrl = config.apiUrl else {
-                if config.debug {
-                    print("[ApiClient] Error: API URL not configured")
-                }
-                return nil
-            }
+            let apiUrl = config.effectiveApiUrl
             
             guard let url = URL(string: "\(apiUrl)/v2/tracking-session") else {
                 if config.debug {
@@ -246,9 +241,7 @@ class ApiClient {
     /// Web Reference: api.ts lines 348-362
     func updateSessionLocation(_ sessionId: String, location: LocationData) async -> Bool {
         do {
-            guard let apiUrl = config.apiUrl else {
-                return false
-            }
+            let apiUrl = config.effectiveApiUrl
             
             guard let url = URL(string: "\(apiUrl)/v2/tracking-session/\(sessionId)/location") else {
                 return false
@@ -283,9 +276,7 @@ class ApiClient {
     /// Web Reference: api.ts lines 324-346
     func updateSessionEmail(_ sessionId: String, newEmail: String, brandId: Int) async -> String? {
         do {
-            guard let apiUrl = config.apiUrl else {
-                return nil
-            }
+            let apiUrl = config.effectiveApiUrl
             
             guard let url = URL(string: "\(apiUrl)/v2/tracking-session/\(sessionId)/email_v2") else {
                 return nil
@@ -345,9 +336,7 @@ class ApiClient {
                 _ = await identifyById(sessionId: sessionId, userId: userId)
             }
             
-            guard let apiUrl = config.apiUrl else {
-                return false
-            }
+            let apiUrl = config.effectiveApiUrl
             
             guard let url = URL(string: "\(apiUrl)/v1/customer-profiles/set") else {
                 return false
@@ -410,9 +399,7 @@ class ApiClient {
         }
         
         do {
-            guard let apiUrl = config.apiUrl else {
-                return false
-            }
+            let apiUrl = config.effectiveApiUrl
             
             guard let url = URL(string: "\(apiUrl)/v1/customer-profiles/set") else {
                 return false
@@ -455,9 +442,7 @@ class ApiClient {
     /// Web Reference: api.ts lines 530-568
     func identifyById(sessionId: String, userId: String) async -> String? {
         do {
-            guard let apiUrl = config.apiUrl else {
-                return nil
-            }
+            let apiUrl = config.effectiveApiUrl
             
             guard let url = URL(string: "\(apiUrl)/v2/tracking-session/\(sessionId)/identify/\(userId)") else {
                 return nil
@@ -502,12 +487,7 @@ class ApiClient {
     /// Web Reference: api.ts lines 452-486
     func trackEvent(_ brandId: Int, sessionId: String, eventName: String, eventData: [String: Any]?) async -> Bool {
         do {
-            guard let apiUrl = config.apiUrl else {
-                if config.debug {
-                    print("[ApiClient] Error: API URL not configured")
-                }
-                return false
-            }
+            let apiUrl = config.effectiveApiUrl
             
             guard let url = URL(string: "\(apiUrl)/v2/tracking-session-data") else {
                 if config.debug {

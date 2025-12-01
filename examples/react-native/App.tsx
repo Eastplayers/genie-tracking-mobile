@@ -24,16 +24,28 @@ function App(): React.JSX.Element {
 
   useEffect(() => {
     // Initialize the SDK when the app loads
-    // TODO: Replace with your actual credentials
+    // Configuration is loaded from .env file via react-native-config
     const initializeSDK = async () => {
       try {
-        const brandId = '7366' // Replace with your Brand ID
-        const apiKey = '03dbd95123137cc76b075f50107d8d2d' // Replace with your API key
-        const apiUrl = 'https://tracking.api.qc.founder-os.ai/api' // Replace with your API endpoint URL
+        // For now using process.env (will work with react-native-config or react-native-dotenv)
+        const brandId = process.env.BRAND_ID || ''
+        const apiKey = process.env.X_API_KEY || ''
+        const apiUrl = process.env.API_URL // Optional, will use default if not provided
+
+        if (!brandId || !apiKey) {
+          throw new Error(
+            'BRAND_ID and X_API_KEY are required. Check your .env file.'
+          )
+        }
+
+        console.log('🔄 Starting MobileTracker initialization...')
+        console.log('   Brand ID:', brandId)
+        console.log('   API URL:', apiUrl || 'default')
+        console.log('   API Key:', apiKey.substring(0, 8) + '...')
 
         await MobileTracker.init({
           apiKey: brandId, // Brand ID is passed as apiKey for React Native bridge
-          endpoint: apiUrl,
+          endpoint: apiUrl, // Optional, will use default if not provided
           debug: true,
           x_api_key: apiKey, // Actual API key for authentication
         })

@@ -211,9 +211,7 @@ class MobileTracker private constructor() {
      */
     private fun validateConfig(config: TrackerConfig) {
         // Basic validation - can be extended as needed
-        if (config.apiUrl.isNullOrEmpty()) {
-            throw IllegalArgumentException("API URL is required in configuration")
-        }
+        // API URL is optional and defaults to TrackerConfig.DEFAULT_API_URL
     }
     
     /**

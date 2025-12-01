@@ -23,15 +23,15 @@ if (!MobileTrackerBridge) {
  * Web Reference: types/index.ts lines 1-30
  */
 export interface MobileTrackerConfig {
-  /** Brand ID - identifies your application/brand (passed as apiKey for React Native bridge compatibility) */
+  /** Brand ID - identifies your application/brand (REQUIRED) */
   apiKey: string
-  /** Backend server URL where events are sent */
-  endpoint: string
+  /** Backend server URL where events are sent (optional, defaults to https://tracking.api.founder-os.ai/api) */
+  endpoint?: string
   /** Enable debug logging */
   debug?: boolean
   /** API URL override (deprecated - use endpoint instead) */
   api_url?: string
-  /** API key for backend authentication */
+  /** API key for backend authentication (REQUIRED) */
   x_api_key?: string
   /** Enable cross-site cookie tracking */
   cross_site_cookie?: boolean
@@ -73,15 +73,27 @@ export interface MobileTracker {
    * Must be called before any tracking methods. Configures the SDK with
    * API credentials and backend endpoint.
    *
-   * @param config - Configuration object with apiKey and endpoint
+   * @param config - Configuration object with:
+   *   - apiKey: Brand ID (REQUIRED)
+   *   - x_api_key: API key for authentication (REQUIRED)
+   *   - endpoint: Backend API URL (optional, defaults to https://tracking.api.founder-os.ai/api)
+   *   - debug: Enable debug logging (optional)
    * @returns Promise that resolves when initialization is complete
    * @throws Error if initialization fails (invalid API key, invalid endpoint, etc.)
    *
    * @example
    * ```typescript
+   * // Minimal configuration (uses default API URL)
    * await MobileTracker.init({
-   *   apiKey: 'your-api-key',
-   *   endpoint: 'https://api.example.com/events'
+   *   apiKey: 'your-brand-id',
+   *   x_api_key: 'your-api-key'
+   * });
+   *
+   * // With custom endpoint
+   * await MobileTracker.init({
+   *   apiKey: 'your-brand-id',
+   *   x_api_key: 'your-api-key',
+   *   endpoint: 'https://custom-api.example.com'
    * });
    * ```
    */
@@ -225,9 +237,9 @@ class MobileTrackerImpl implements MobileTracker {
    * Validates configuration and forwards to native SDK.
    *
    * @param config - Configuration object with:
-   *   - apiKey: Brand ID (identifies your application/brand)
-   *   - endpoint: Backend API URL
-   *   - x_api_key: API key for authentication
+   *   - apiKey: Brand ID (identifies your application/brand) - REQUIRED
+   *   - x_api_key: API key for authentication - REQUIRED
+   *   - endpoint: Backend API URL (optional, defaults to https://tracking.api.founder-os.ai/api)
    *   - debug: Enable debug logging (optional)
    * @returns Promise that resolves when initialization is complete
    * @throws Error if configuration is invalid or initialization fails
@@ -237,8 +249,13 @@ class MobileTrackerImpl implements MobileTracker {
       throw new Error('Invalid Brand ID (apiKey): must be a non-empty string')
     }
 
-    if (!config.endpoint || typeof config.endpoint !== 'string') {
-      throw new Error('Invalid endpoint: must be a non-empty string')
+    if (!config.x_api_key || typeof config.x_api_key !== 'string') {
+      throw new Error('Invalid API key (x_api_key): must be a non-empty string')
+    }
+
+    // endpoint is optional, will use default if not provided
+    if (config.endpoint && typeof config.endpoint !== 'string') {
+      throw new Error('Invalid endpoint: must be a string')
     }
 
     try {
@@ -375,10 +392,10 @@ class MobileTrackerImpl implements MobileTracker {
  * ```typescript
  * import MobileTracker from '@mobiletracker/react-native';
  *
- * // Initialize
+ * // Initialize (uses default API URL)
  * await MobileTracker.init({
- *   apiKey: 'your-api-key',
- *   endpoint: 'https://api.example.com/events'
+ *   apiKey: 'your-brand-id',
+ *   x_api_key: 'your-api-key'
  * });
  *
  * // Track events

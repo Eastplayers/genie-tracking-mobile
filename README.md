@@ -473,6 +473,31 @@ const config = {
 }
 ```
 
+## Documentation
+
+Complete documentation is available in the [`docs/`](./docs/) directory:
+
+- **[Documentation Index](./docs/README.md)** - Start here for all documentation
+- **[Examples Guide](./docs/EXAMPLES_GUIDE.md)** - Complete guide to running example projects
+- **[Local Development](./docs/LOCAL_DEVELOPMENT.md)** - Developing and testing locally
+- **[Platform Publishing](./docs/PLATFORM_PUBLISHING.md)** - Publishing guide for all platforms
+- **[Configuration Guide](./docs/CONFIGURATION.md)** - Complete configuration reference
+- **[API Reference](./API_REFERENCE.md)** - Complete API documentation
+- **[Security Policy](./SECURITY.md)** - Security best practices
+
+### Quick Links
+
+- **Getting Started**: [Documentation Index](./docs/README.md)
+- **Run Examples**: [Examples Guide](./docs/EXAMPLES_GUIDE.md)
+- **Develop Locally**: [Local Development](./docs/LOCAL_DEVELOPMENT.md)
+- **Publish Releases**: [Platform Publishing](./docs/PLATFORM_PUBLISHING.md)
+
+### Platform-Specific Documentation
+
+- **iOS**: [Publishing](./ios/PUBLISHING.md) | [Local Development](./ios/LOCAL_DEVELOPMENT.md) | [Quick Reference](./ios/QUICK_REFERENCE.md)
+- **Android**: [Publishing](./android/PUBLISHING.md) | [Version Management](./android/VERSION_MANAGEMENT.md) | [Quick Reference](./android/QUICK_REFERENCE.md)
+- **React Native**: [Build Guide](./react-native/BUILD_AND_RUN.md) | [Commands](./REACT_NATIVE_COMMANDS.md)
+
 ## API Reference
 
 See [API_REFERENCE.md](./API_REFERENCE.md) for detailed documentation of all methods, parameters, and error codes.
@@ -484,6 +509,8 @@ Complete example applications are available in the `examples/` directory:
 - [iOS Example](./examples/ios/README.md) - Native iOS app with SwiftUI
 - [Android Example](./examples/android/README.md) - Native Android app with Kotlin
 - [React Native Example](./examples/react-native/README.md) - Cross-platform React Native app
+
+See the [Examples Guide](./docs/EXAMPLES_GUIDE.md) for detailed setup and usage instructions.
 
 ## Architecture
 
@@ -1017,6 +1044,51 @@ npm run test:react-native
 
 - Ensure `@types/react-native` is installed
 - Check that your `tsconfig.json` includes the correct paths
+
+## Configuration
+
+The SDK requires minimal configuration:
+
+**Required:**
+
+- `BRAND_ID` - Your brand identifier
+- `X_API_KEY` - API key for authentication
+
+**Optional:**
+
+- `API_URL` - Custom API endpoint (defaults to `https://tracking.api.founder-os.ai/api`)
+
+**Quick Example:**
+
+```swift
+// iOS - Minimal configuration
+let config = TrackerConfig(debug: true, xApiKey: "your_api_key")
+try await MobileTracker.shared.initialize(brandId: "your_brand_id", config: config)
+```
+
+```kotlin
+// Android - Minimal configuration
+val config = TrackerConfig(debug = true, xApiKey = "your_api_key")
+MobileTracker.getInstance().initialize(context, "your_brand_id", config)
+```
+
+```typescript
+// React Native - Minimal configuration
+await MobileTracker.init({ apiKey: 'your_brand_id', x_api_key: 'your_api_key' })
+```
+
+**📖 For detailed configuration:** See [Configuration Guide](docs/CONFIGURATION.md)
+
+## Security
+
+**⚠️ Never hardcode credentials in your source code.**
+
+Use environment variables for all sensitive configuration. See:
+
+- **[Security Policy](SECURITY.md)** - Security best practices
+- **[Configuration Guide](docs/CONFIGURATION.md)** - How to use environment variables
+
+**Reporting Security Issues:** security@founder-os.ai
 
 ## Contributing
 

@@ -223,7 +223,7 @@ class ApiClient(
             
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v2/tracking-session")
+                .url("${config.getEffectiveApiUrl()}/v2/tracking-session")
                 .post(requestBody)
             
             // Add headers
@@ -308,7 +308,7 @@ class ApiClient(
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
             
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v2/tracking-session/$sessionId/location")
+                .url("${config.getEffectiveApiUrl()}/v2/tracking-session/$sessionId/location")
                 .put(requestBody)
             
             getHeaders().forEach { (key, value) ->
@@ -353,7 +353,7 @@ class ApiClient(
             
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v2/tracking-session/$sessionId/email_v2")
+                .url("${config.getEffectiveApiUrl()}/v2/tracking-session/$sessionId/email_v2")
                 .put(requestBody)
             
             getHeaders().forEach { (key, value) ->
@@ -482,7 +482,7 @@ class ApiClient(
             
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v1/customer-profiles/set")
+                .url("${config.getEffectiveApiUrl()}/v1/customer-profiles/set")
                 .put(requestBody)
             
             getHeaders().forEach { (key, value) ->
@@ -568,7 +568,7 @@ class ApiClient(
             
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v1/customer-profiles/set")
+                .url("${config.getEffectiveApiUrl()}/v1/customer-profiles/set")
                 .put(requestBody)
             
             getHeaders().forEach { (key, value) ->
@@ -606,7 +606,7 @@ class ApiClient(
         try {
             val emptyBody = ByteArray(0).toRequestBody(null)
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v2/tracking-session/$sessionId/identify/$userId")
+                .url("${config.getEffectiveApiUrl()}/v2/tracking-session/$sessionId/identify/$userId")
                 .put(emptyBody)
             
             getHeaders().forEach { (key, value) ->
@@ -706,7 +706,7 @@ class ApiClient(
             
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v2/tracking-session-data")
+                .url("${config.getEffectiveApiUrl()}/v2/tracking-session-data")
                 .post(requestBody)
             
             getHeaders().forEach { (key, value) ->
@@ -798,7 +798,7 @@ class ApiClient(
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
             
             val requestBuilder = Request.Builder()
-                .url("${config.apiUrl}/v2/tracking-session/link-session")
+                .url("${config.getEffectiveApiUrl()}/v2/tracking-session/link-session")
                 .post(requestBody)
             
             getHeaders().forEach { (key, value) ->
@@ -853,7 +853,15 @@ data class TrackerConfig(
     val cookieExpiration: Int = 365
 ) {
     companion object {
+        /** Default API URL for the tracking backend */
+        const val DEFAULT_API_URL = "https://tracking.api.founder-os.ai/api"
+        
         fun default() = TrackerConfig()
+    }
+    
+    /** Get the effective API URL (returns default if apiUrl is null or empty) */
+    fun getEffectiveApiUrl(): String {
+        return if (!apiUrl.isNullOrEmpty()) apiUrl else DEFAULT_API_URL
     }
 }
 

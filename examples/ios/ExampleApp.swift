@@ -23,17 +23,22 @@ class AppState: ObservableObject {
     
     func initializeTracker() async {
         // Initialize the SDK when app launches
-        let brandId = "7366"
-        let apiKey = "03dbd95123137cc76b075f50107d8d2d"
-        let apiUrl = "https://tracking.api.qc.founder-os.ai/api"
-        
+        // Configuration is loaded from environment variables via Config helper
         do {
+            // Validate configuration
+            try Config.validate()
+            
+            print("🔄 Starting MobileTracker initialization...")
+            print("   Brand ID: \(Config.brandId)")
+            print("   API URL: \(Config.apiUrl ?? "default")")
+            print("   API Key: \(Config.xApiKey?.prefix(8) ?? "")...")
+            
             try await MobileTracker.shared.initialize(
-                brandId: brandId,
+                brandId: Config.brandId,
                 config: TrackerConfig(
-                    debug: true,
-                    apiUrl: apiUrl,
-                    xApiKey: apiKey
+                    debug: Config.debug,
+                    apiUrl: Config.apiUrl,
+                    xApiKey: Config.xApiKey
                 )
             )
             print("✅ MobileTracker initialized successfully")

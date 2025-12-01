@@ -20,26 +20,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         
         // Initialize the SDK when activity is created
-        // TODO: Replace with your actual credentials
-        val brandId = "7366"  // Replace with your Brand ID
-        val apiKey = "03dbd95123137cc76b075f50107d8d2d"  // Replace with your API key
-        val apiUrl = "https://tracking.api.qc.founder-os.ai/api"  // Replace with your API endpoint URL
-        
-        // Initialize in a coroutine and update state when complete
+        // Configuration is loaded from local.env file via BuildConfig
         kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
             try {
+                // Validate configuration
+                Config.validate()
+                
                 println("🔄 Starting MobileTracker initialization...")
-                println("   Brand ID: $brandId")
-                println("   API URL: $apiUrl")
-                println("   API Key: ${apiKey.take(8)}...")
+                println("   Brand ID: ${Config.brandId}")
+                println("   API URL: ${Config.apiUrl ?: "default"}")
+                println("   API Key: ${Config.xApiKey?.take(8)}...")
                 
                 MobileTracker.getInstance().initialize(
                     context = applicationContext,
-                    brandId = brandId,
+                    brandId = Config.brandId,
                     config = ai.founderos.mobiletracker.TrackerConfig(
-                        debug = true,
-                        apiUrl = apiUrl,
-                        xApiKey = apiKey
+                        debug = Config.debug,
+                        apiUrl = Config.apiUrl,
+                        xApiKey = Config.xApiKey
                     )
                 )
                 println("✅ MobileTracker initialized successfully")

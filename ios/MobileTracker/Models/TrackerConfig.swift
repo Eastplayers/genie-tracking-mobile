@@ -3,10 +3,13 @@ import Foundation
 /// Configuration for the Mobile Tracker SDK
 /// Mirrors the web TrackerConfig interface
 public struct TrackerConfig {
+    /// Default API URL for the tracking backend
+    public static let defaultApiUrl = "https://tracking.api.founder-os.ai/api"
+    
     /// Enable debug logging
     public var debug: Bool
     
-    /// Backend API URL
+    /// Backend API URL (defaults to https://tracking.api.founder-os.ai/api if nil or empty)
     public var apiUrl: String?
     
     /// API key for authentication
@@ -20,6 +23,14 @@ public struct TrackerConfig {
     
     /// Cookie expiration in days
     public var cookieExpiration: Int
+    
+    /// Get the effective API URL (returns default if apiUrl is nil or empty)
+    public var effectiveApiUrl: String {
+        if let url = apiUrl, !url.isEmpty {
+            return url
+        }
+        return TrackerConfig.defaultApiUrl
+    }
     
     /// Default configuration
     public static let `default` = TrackerConfig(

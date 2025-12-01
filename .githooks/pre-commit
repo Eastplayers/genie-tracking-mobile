@@ -1,0 +1,76 @@
+#!/bin/bash
+# Pre-commit hook to prevent committing sensitive data
+# 
+# To install this hook, run:
+#   git config core.hooksPath .githooks
+#
+# Or copy this file to .git/hooks/pre-commit and make it executable:
+#   cp .githooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+
+# Colors for output
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Patterns to search for (case insensitive)
+PATTERNS=(
+    "api[_-]?key\s*[=:]\s*['\"][^'\"]{8,}"
+    "password\s*[=:]\s*['\"][^'\"]{4,}"
+    "secret\s*[=:]\s*['\"][^'\"]{8,}"
+    "token\s*[=:]\s*['\"][^'\"]{8,}"
+    "SONATYPE_PASSWORD"
+    "signing\.password"
+    "private[_-]?key"
+)
+
+# Files that should never be committed
+FORBIDDEN_FILES=(
+    ".env"
+    ".env.local"
+    "android/local.properties"
+    "android/gradle.properties.local"
+    "ios/local.properties"
+)
+
+echo "🔍 Checking for sensitive data..."
+
+# Check for forbidden files
+for file in "${FORBIDDEN_FILES[@]}"; do
+    if git diff --cached --name-only | grep -q "^$file$"; then
+        echo -e "${RED}❌ ERROR: Attempting to commit forbidden file: $file${NC}"
+        echo -e "${YELLOW}This file may contain sensitive data and should not be committed.${NC}"
+        exit 1
+    fi
+done
+
+# Check staged files for sensitive patterns
+for pattern in "${PATTERNS[@]}"; do
+    if git diff --cached | grep -iE "$pattern" > /dev/null; then
+        echo -e "${RED}❌ ERROR: Potential sensitive data detected!${NC}"
+        echo -e "${YELLOW}Pattern matched: $pattern${NC}"
+        echo ""
+        echo "Matched lines:"
+        git diff --cached | grep -iE "$pattern" --color=always
+        echo ""
+        echo -e "${YELLOW}If this is a false positive, you can bypass this check with:${NC}"
+        echo "  git commit --no-verify"
+        exit 1
+    fi
+done
+
+# Check for large files (> 5MB)
+MAX_SIZE=5242880 # 5MB in bytes
+while IFS= read -r file; do
+    if [ -f "$file" ]; then
+        size=$(wc -c < "$file")
+        if [ "$size" -gt "$MAX_SIZE" ]; then
+            echo -e "${RED}❌ ERROR: File too large: $file ($(numfmt --to=iec-i --suffix=B $size))${NC}"
+            echo -e "${YELLOW}Large files should not be committed to git.${NC}"
+            exit 1
+        fi
+    fi
+done < <(git diff --cached --name-only)
+
+echo "✅ Pre-commit checks passed!"
+exit 0
