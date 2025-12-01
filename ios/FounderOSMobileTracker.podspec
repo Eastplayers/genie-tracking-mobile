@@ -8,14 +8,14 @@ Pod::Spec.new do |s|
   DESC
 
   s.homepage         = 'https://founder-os.ai'
-  s.license          = { :type => 'MIT', :file => '../LICENSE' }
+  s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'founder-os.ai' => 'contact@founder-os.ai' }
   s.source           = { :git => 'https://github.com/Eastplayers/genie-tracking-mobile.git', :tag => "v#{s.version}" }
 
   s.ios.deployment_target = '13.0'
   s.swift_version = '5.5'
 
-  s.source_files = 'MobileTracker/**/*.{swift,h,m}'
+  s.source_files = 'ios/MobileTracker/**/*.{swift,h,m}'
   
   s.frameworks = 'Foundation'
 end

@@ -20,7 +20,7 @@ if [ ! -f "$PODSPEC_PATH" ]; then
 fi
 
 # Extract version from podspec
-VERSION=$(grep "s.version" "$PODSPEC_PATH" | sed -E "s/.*'([0-9]+\.[0-9]+\.[0-9]+)'.*/\1/")
+VERSION=$(grep "s.version" "$PODSPEC_PATH" | grep -v "s.source" | sed -E "s/.*'([0-9]+\.[0-9]+\.[0-9]+)'.*/\1/")
 echo "📦 Package: $PODSPEC_NAME"
 echo "🏷️  Version: $VERSION"
 echo ""

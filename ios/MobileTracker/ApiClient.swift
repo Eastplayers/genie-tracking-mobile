@@ -123,7 +123,7 @@ class ApiClient {
         // Detect device type based on user interface idiom
         let deviceType: String
         #if canImport(UIKit)
-        switch UIDevice.current.userInterfaceIdiom {
+        switch await UIDevice.current.userInterfaceIdiom {
         case .phone:
             deviceType = "Mobile"
         case .pad:

@@ -337,20 +337,14 @@ import UIKit
         }
         
         // Call apiClient.trackEvent() (web: line 326)
-        do {
-            let success = await apiClient.trackEvent(brandId, sessionId: sessionId, eventName: eventName, eventData: eventData.isEmpty ? nil : eventData)
-            
-            // Log success/error in debug mode (web: lines 328-334)
-            if config.debug {
-                if success {
-                    print("[MobileTracker] Event tracked: \(eventName), \(attributes ?? [:])")
-                } else {
-                    print("[MobileTracker] Error tracking event: \(eventName)")
-                }
-            }
-        } catch {
-            if config.debug {
-                print("[MobileTracker] Error tracking event: \(error)")
+        let success = await apiClient.trackEvent(brandId, sessionId: sessionId, eventName: eventName, eventData: eventData.isEmpty ? nil : eventData)
+        
+        // Log success/error in debug mode (web: lines 328-334)
+        if config.debug {
+            if success {
+                print("[MobileTracker] Event tracked: \(eventName), \(attributes ?? [:])")
+            } else {
+                print("[MobileTracker] Error tracking event: \(eventName)")
             }
         }
     }
@@ -491,20 +485,14 @@ import UIKit
         }
         
         // Call apiClient.setMetadata() (web: line 450)
-        do {
-            let success = await apiClient.setMetadata(metadata, brandId: brandId)
-            
-            // Log success/error in debug mode (web: lines 452-458)
-            if config.debug {
-                if success {
-                    print("[MobileTracker] Metadata set successfully")
-                } else {
-                    print("[MobileTracker] Error setting metadata")
-                }
-            }
-        } catch {
-            if config.debug {
-                print("[MobileTracker] Error setting metadata: \(error)")
+        let success = await apiClient.setMetadata(metadata, brandId: brandId)
+        
+        // Log success/error in debug mode (web: lines 452-458)
+        if config.debug {
+            if success {
+                print("[MobileTracker] Metadata set successfully")
+            } else {
+                print("[MobileTracker] Error setting metadata")
             }
         }
     }
