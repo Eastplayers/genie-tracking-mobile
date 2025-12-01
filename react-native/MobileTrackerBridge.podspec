@@ -22,15 +22,10 @@ Pod::Spec.new do |s|
   # For local development, the version requirement should match the local SDK version
   # The Podfile in the example app uses :path to override this with the local SDK
   
-  # Version requirement (matches local SDK version 0.1.x)
-  s.dependency "FounderOSMobileTracker", "~> 0.1"
-  
-  # PRODUCTION NOTE: When publishing to production, update this to:
-  # s.dependency "FounderOSMobileTracker", "~> 1.0"
+  # Version requirement
+  s.dependency "FounderOSMobileTracker", "~> 0.1.0"
   
   # To switch between configurations:
-  # 1. Comment out the current dependency line
-  # 2. Uncomment the desired dependency line
-  # 3. Run 'pod install' in your app directory
-  # 4. Clean build folder in Xcode if needed (Cmd+Shift+K)
+  # 1. Run 'pod install' in your app directory
+  # 2. Clean build folder in Xcode if needed (Cmd+Shift+K)
 end

@@ -56,10 +56,10 @@ repositories {
     
     // LOCAL DEVELOPMENT: Uncomment for local Maven repository
     // This allows you to test changes to the Android SDK locally
-    mavenLocal()
+    // mavenLocal()
     
     // PRODUCTION: Uncomment for JitPack (published releases)
-    // maven { url 'https://jitpack.io' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -70,8 +70,10 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
     
     // Mobile Tracker Android SDK
-    // The artifact ID is the same for both local and production builds
-    implementation 'ai.founderos:mobile-tracking-sdk:0.1.0'
+    // LOCAL:
+    // implementation 'ai.founderos:mobile-tracking-sdk:0.1.2'
+    // PRODUCTION:
+    implementation 'com.github.Eastplayers:genie-tracking-mobile:v0.1.2'
     
     // ============================================================================
     // SWITCHING BETWEEN LOCAL AND PRODUCTION DEPENDENCIES

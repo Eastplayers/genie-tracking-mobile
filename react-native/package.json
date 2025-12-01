@@ -1,13 +1,13 @@
 {
-  "name": "@mobiletracker/react-native",
+  "name": "founder-os-tracker-react-native",
   "version": "0.1.0",
   "description": "React Native bridge for Mobile Tracking SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest --run",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:property": "jest --testPathPattern=properties --run",
+    "test:property": "jest --testPathPattern=properties --passWithNoTests",
     "build": "tsc",
     "prepare": "npm run build"
   },
@@ -17,8 +17,27 @@
     "tracking",
     "mobile"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "FounderOS Team <dev@founderos.ai>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Eastplayers/genie-tracking-mobile.git",
+    "directory": "react-native"
+  },
+  "bugs": {
+    "url": "https://github.com/Eastplayers/genie-tracking-mobile/issues"
+  },
+  "homepage": "https://github.com/Eastplayers/genie-tracking-mobile#readme",
+  "files": [
+    "lib/",
+    "ios/**/*.{h,m,swift}",
+    "android/src/",
+    "android/build.gradle",
+    "android/proguard-rules.pro",
+    "src/",
+    "MobileTrackerBridge.podspec",
+    "README.md"
+  ],
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-native": ">=0.70.0"
