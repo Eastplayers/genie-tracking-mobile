@@ -26,7 +26,14 @@ if linkage != nil
 end
 
 target 'MobileTrackerExample' do
-  # Local pod for testing (comment out for production)
+  # ============================================================================
+  # LOCAL DEVELOPMENT CONFIGURATION
+  # ============================================================================
+  # This example app uses the local iOS SDK for development and testing
+  # Path points to: ../../../ios (the iOS SDK directory in the monorepo)
+  #
+  # For production apps, use the published pod instead:
+  # pod 'FounderOSMobileTracker', '~> 1.0'
   pod 'FounderOSMobileTracker', :path => '../../../ios'
   
   config = use_native_modules!

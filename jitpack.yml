@@ -1,2 +1,9 @@
 jdk:
   - openjdk17
+
+# Monorepo configuration - Android library is in the 'android' subdirectory
+before_install:
+  - cd android
+
+install:
+  - ./gradlew publishToMavenLocal

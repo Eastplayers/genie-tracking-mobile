@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.8.0'
+    ext.kotlin_version = '2.0.0'
     
     repositories {
         google()
@@ -7,7 +7,7 @@ buildscript {
     }
     
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -33,12 +33,12 @@ android {
     }
     
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     
     sourceSets {
@@ -53,6 +53,13 @@ android {
 repositories {
     google()
     mavenCentral()
+    
+    // LOCAL DEVELOPMENT: Uncomment for local Maven repository
+    // This allows you to test changes to the Android SDK locally
+    mavenLocal()
+    
+    // PRODUCTION: Uncomment for JitPack (published releases)
+    // maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -63,8 +70,30 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
     
     // Mobile Tracker Android SDK
-    // TODO: This should reference a published Maven artifact
-    // For now, the SDK source needs to be copied into this module or
-    // the parent app must configure the dependency manually
-    // implementation project(':android')
+    // The artifact ID is the same for both local and production builds
+    implementation 'ai.founderos:mobile-tracking-sdk:0.1.0'
+    
+    // ============================================================================
+    // SWITCHING BETWEEN LOCAL AND PRODUCTION DEPENDENCIES
+    // ============================================================================
+    //
+    // FOR LOCAL DEVELOPMENT:
+    // 1. Ensure mavenLocal() is uncommented in the repositories block above
+    // 2. Publish the Android SDK to your local Maven repository:
+    //    cd ../../android && ./gradlew publishToMavenLocal
+    // 3. Rebuild this module to pick up the local changes
+    // 4. Make changes to the Android SDK, republish, and rebuild to test
+    //
+    // FOR PRODUCTION (using JitPack):
+    // 1. Comment out mavenLocal() in the repositories block above
+    // 2. Uncomment the JitPack repository: maven { url 'https://jitpack.io' }
+    // 3. Update the dependency to use the JitPack group ID:
+    //    implementation 'com.github.Eastplayers:genie-tracking-mobile:TAG'
+    //    (Replace TAG with the desired version, e.g., '1.0.0')
+    // 4. Run ./gradlew clean to clear cached artifacts
+    // 5. Rebuild the module
+    //
+    // NOTE: When switching configurations, always run a clean build to ensure
+    // Gradle picks up the correct artifact source.
+    // ============================================================================
 }

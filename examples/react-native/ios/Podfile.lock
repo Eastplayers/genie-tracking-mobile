@@ -67,14 +67,14 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
-  - FounderOSMobileTracker (0.1.0)
+  - FounderOSMobileTracker (0.1.1)
   - glog (0.3.5)
   - hermes-engine (0.73.9):
     - hermes-engine/Pre-built (= 0.73.9)
   - hermes-engine/Pre-built (0.73.9)
   - libevent (2.1.12)
   - MobileTrackerBridge (0.1.0):
-    - FounderOSMobileTracker
+    - FounderOSMobileTracker (~> 0.1)
     - React-Core
   - OpenSSL-Universal (1.1.1100)
   - RCT-Folly (2022.05.16.00):
@@ -1329,11 +1329,11 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   FlipperKit: 37525a5d056ef9b93d1578e04bc3ea1de940094f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  FounderOSMobileTracker: c9926f0f4c8df050fb43c328a4381ee2f3347543
+  FounderOSMobileTracker: d9d8083e5a41dc67f0e93bda560a9812377de403
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: ed62e0dcd013bf4a3b487f164feec1c4e705b5b5
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MobileTrackerBridge: f2ec9bf116a62a0a7089aa3020276029c296a54c
+  MobileTrackerBridge: 7cd1d328c337d027c735f8abe2bdc163e4060716
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: cd21f1661364f975ae76b3308167ad66b09f53f5
   RCTRequired: d362a61864a64315aee00faea8dee6cf5b3f4aad
@@ -1379,6 +1379,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 57d2ffe418d024d56f8b0047f335c677e4c4d9ac
 
-PODFILE CHECKSUM: 8d4912198eb9e415fc54b06ff9fa1c525839f876
+PODFILE CHECKSUM: e15b1b3b93ccf2f6dc0ec8e5c0bef98f6e428f8a
 
 COCOAPODS: 1.16.2

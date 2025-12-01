@@ -1,8 +1,12 @@
 package com.mobiletracker.bridge
 
 import com.facebook.react.bridge.*
-import com.mobiletracker.MobileTracker
-import com.mobiletracker.TrackerError
+import ai.founderos.mobiletracker.MobileTracker
+import ai.founderos.mobiletracker.TrackerConfig
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * React Native bridge module for Mobile Tracking SDK (Android)
@@ -65,24 +69,24 @@ class MobileTrackerBridge(reactContext: ReactApplicationContext) :
             val xApiKey = config.getString("x_api_key")
             val debug = config.getBoolean("debug")
             
-            val trackerConfig = com.mobiletracker.TrackerConfig(
+            val trackerConfig = TrackerConfig(
                 debug = debug,
                 apiUrl = apiUrl,
                 xApiKey = xApiKey
             )
             
-            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 try {
                     MobileTracker.getInstance().initialize(
                         context = reactApplicationContext,
                         brandId = brandId,
                         config = trackerConfig
                     )
-                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         promise.resolve(null)
                     }
                 } catch (e: Exception) {
-                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         promise.reject("INIT_ERROR", e.message, e)
                     }
                 }
@@ -104,7 +108,9 @@ class MobileTrackerBridge(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun track(event: String, properties: ReadableMap?) {
         val propsMap = properties?.toHashMap()
-        MobileTracker.getInstance().track(event, propsMap)
+        CoroutineScope(Dispatchers.IO).launch {
+            MobileTracker.getInstance().track(event, propsMap)
+        }
     }
     
     /**
@@ -119,13 +125,15 @@ class MobileTrackerBridge(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun identify(userId: String, traits: ReadableMap?) {
         val traitsMap = traits?.toHashMap()
-        MobileTracker.getInstance().identify(userId, traitsMap)
+        CoroutineScope(Dispatchers.IO).launch {
+            MobileTracker.getInstance().identify(userId, traitsMap)
+        }
     }
     
     /**
      * Track a screen view
      * 
-     * Forwards screen tracking to the native SDK. Converts React Native
+     * Tracks a screen view as a special event. Converts React Native
      * ReadableMap to a native Kotlin Map for properties.
      * 
      * @param name The name of the screen
@@ -133,8 +141,11 @@ class MobileTrackerBridge(reactContext: ReactApplicationContext) :
      */
     @ReactMethod
     fun screen(name: String, properties: ReadableMap?) {
-        val propsMap = properties?.toHashMap()
-        MobileTracker.getInstance().screen(name, propsMap)
+        val propsMap = properties?.toHashMap()?.toMutableMap() ?: mutableMapOf()
+        propsMap["screen_name"] = name
+        CoroutineScope(Dispatchers.IO).launch {
+            MobileTracker.getInstance().track("screen_view", propsMap)
+        }
     }
     
     /**
@@ -153,14 +164,14 @@ class MobileTrackerBridge(reactContext: ReactApplicationContext) :
     fun setMetadata(metadata: ReadableMap, promise: Promise) {
         try {
             val metadataMap = metadata.toHashMap()
-            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 try {
                     MobileTracker.getInstance().setMetadata(metadataMap)
-                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         promise.resolve(null)
                     }
                 } catch (e: Exception) {
-                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         promise.reject("SET_METADATA_ERROR", e.message, e)
                     }
                 }
@@ -186,14 +197,14 @@ class MobileTrackerBridge(reactContext: ReactApplicationContext) :
     fun set(profileData: ReadableMap, promise: Promise) {
         try {
             val profileMap = profileData.toHashMap()
-            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 try {
                     MobileTracker.getInstance().set(profileMap)
-                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         promise.resolve(null)
                     }
                 } catch (e: Exception) {
-                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
                         promise.reject("SET_PROFILE_ERROR", e.message, e)
                     }
                 }
