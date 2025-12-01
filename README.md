@@ -22,12 +22,14 @@ A cross-platform analytics and event tracking SDK for iOS, Android, and React Na
 
 ## Installation
 
-### iOS (CocoaPods)
+### iOS (CocoaPods) - Recommended
+
+**For both React Native and native iOS apps**
 
 Add to your `Podfile`:
 
 ```ruby
-pod 'MobileTracker', '~> 0.1.0'
+pod 'FounderOSMobileTracker', '~> 0.1.0'
 ```
 
 Then run:
@@ -36,41 +38,125 @@ Then run:
 pod install
 ```
 
-### iOS (Swift Package Manager)
+Import in your Swift code:
+
+```swift
+import FounderOSMobileTracker
+```
+
+**Note**: This library is part of a monorepo. CocoaPods will automatically fetch the correct iOS library files from the repository.
+
+### iOS (Swift Package Manager) - Optional
+
+**For native iOS apps only (not React Native)**
 
 Add the package dependency in Xcode:
 
 1. File → Add Packages...
-2. Enter the repository URL: `https://github.com/yourusername/mobile-tracking-sdk.git`
+2. Enter the repository URL: `https://github.com/Eastplayers/genie-tracking-mobile`
 3. Select version `0.1.0` or later
 
 Or add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/mobile-tracking-sdk.git", from: "0.1.0")
+    .package(url: "https://github.com/Eastplayers/genie-tracking-mobile", from: "0.1.0")
 ]
 ```
+
+Import in your Swift code:
+
+```swift
+import MobileTracker  // Note: SPM uses the target name from Package.swift
+```
+
+**Note**: The Package.swift file is located in the `/ios` subdirectory of the monorepo. Swift Package Manager is not supported for React Native projects - use CocoaPods instead.
 
 ### Android (Gradle)
 
 #### Option 1: JitPack (Recommended)
 
-Add the JitPack repository to your project's `build.gradle` or `settings.gradle`:
+JitPack builds the library directly from GitHub releases, making it easy to use without complex setup.
+
+**Step 1: Add JitPack Repository**
+
+For Gradle 7.0+ (using `settings.gradle` or `settings.gradle.kts`):
 
 ```gradle
-repositories {
-    maven { url 'https://jitpack.io' }
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
 }
 ```
 
-Add the dependency to your app's `build.gradle`:
+For older Gradle versions (using project-level `build.gradle`):
+
+```gradle
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+**Step 2: Add Dependency**
+
+Add to your app module's `build.gradle`:
 
 ```gradle
 dependencies {
     implementation 'com.github.founderos:mobile-tracking-sdk:0.1.0'
 }
 ```
+
+**Version Resolution:**
+
+JitPack supports multiple version formats:
+
+- **Specific version**: `0.1.0` - Use exact release version
+- **Latest release**: `latest` - Always use the most recent release (not recommended for production)
+- **Commit hash**: `abc1234` - Use specific commit (for testing unreleased changes)
+- **Branch**: `main-SNAPSHOT` - Use latest from a branch (for development)
+
+**Examples:**
+
+```gradle
+// Use specific version (recommended for production)
+implementation 'com.github.founderos:mobile-tracking-sdk:0.1.0'
+
+// Use latest release (not recommended - may break builds)
+implementation 'com.github.founderos:mobile-tracking-sdk:latest'
+
+// Use specific commit (for testing)
+implementation 'com.github.founderos:mobile-tracking-sdk:abc1234567'
+
+// Use branch snapshot (for development)
+implementation 'com.github.founderos:mobile-tracking-sdk:main-SNAPSHOT'
+```
+
+**Checking Build Status:**
+
+Visit [https://jitpack.io/#founderos/mobile-tracking-sdk](https://jitpack.io/#founderos/mobile-tracking-sdk) to:
+
+- View available versions
+- Check build status and logs
+- See build artifacts
+
+**Troubleshooting:**
+
+If JitPack build fails or dependency cannot be resolved:
+
+1. **Check build status**: Visit the JitPack page for this repository
+2. **Verify tag exists**: Ensure the Git tag was pushed to GitHub
+3. **Clear Gradle cache**: Run `./gradlew --refresh-dependencies`
+4. **Check build logs**: JitPack provides detailed logs for each build
+5. **Wait for build**: First-time builds may take 2-5 minutes
 
 #### Option 2: Maven Central
 
@@ -632,44 +718,90 @@ The SDK handles errors gracefully and never crashes the host application:
 - **Android**: Android API 21+ (Lollipop), Kotlin 1.8+
 - **React Native**: React Native 0.70+
 
-## Project Structure
+## Monorepo Structure
+
+This library is organized as a **monorepo** containing iOS, Android, and React Native implementations in a single repository. This structure provides several benefits:
+
+- **Single source of truth**: All platforms share the same version and release cycle
+- **Coordinated updates**: Changes across platforms can be made in a single commit
+- **Simplified maintenance**: One repository to manage instead of three separate ones
+
+### How It Works
+
+When you install the library via CocoaPods or Gradle:
+
+1. The package manager clones the **entire repository**
+2. It checks out the specific **version tag** you requested
+3. It uses **only the files** specified for that platform (iOS or Android)
+4. Other platform directories are ignored
+
+**Example**: When you install via CocoaPods:
+
+- CocoaPods fetches: `https://github.com/Eastplayers/genie-tracking-mobile.git`
+- It uses only: `ios/MobileTracker/**/*.{swift,h,m}` (specified in podspec)
+- It ignores: `android/`, `react-native/`, `examples/`, etc.
+
+### Project Structure
 
 ```
-mobile-tracking-sdk/
-├── ios/                          # iOS SDK (Swift)
-│   ├── MobileTracker/           # Source files
-│   │   └── Models/              # Data models
-│   ├── Tests/
-│   │   ├── MobileTrackerTests/          # Unit tests (XCTest)
-│   │   └── MobileTrackerPropertyTests/  # Property-based tests (SwiftCheck)
-│   ├── MobileTracker.podspec    # CocoaPods spec
-│   └── Package.swift            # Swift Package Manager
+genie-tracking-mobile/              # Monorepo root
+├── ios/                            # iOS SDK (Swift)
+│   ├── FounderOSMobileTracker.podspec  # CocoaPods spec
+│   ├── Package.swift               # Swift Package Manager manifest
+│   ├── MobileTracker/              # Source files
+│   │   ├── MobileTracker.swift
+│   │   ├── Configuration.swift
+│   │   └── Models/                 # Data models
+│   └── Tests/
+│       ├── MobileTrackerTests/          # Unit tests (XCTest)
+│       └── MobileTrackerPropertyTests/  # Property-based tests (SwiftCheck)
 │
-├── android/                      # Android SDK (Kotlin)
+├── android/                        # Android SDK (Kotlin)
+│   ├── build.gradle                # Gradle build configuration
 │   ├── src/
-│   │   ├── main/java/com/mobiletracker/     # Source files
-│   │   │   └── models/                       # Data models
-│   │   ├── test/java/com/mobiletracker/     # Unit tests (JUnit)
-│   │   └── propertyTest/java/com/mobiletracker/  # Property-based tests (Kotest)
-│   └── build.gradle             # Gradle build configuration
+│   │   ├── main/java/ai/founderos/     # Source files
+│   │   │   └── models/                  # Data models
+│   │   ├── test/java/ai/founderos/     # Unit tests (JUnit)
+│   │   └── propertyTest/java/ai/founderos/  # Property-based tests (Kotest)
+│   └── gradle.properties           # Version configuration
 │
-├── react-native/                 # React Native Bridge
-│   ├── ios/                     # iOS bridge implementation
-│   ├── android/                 # Android bridge implementation
-│   ├── src/                     # TypeScript source
+├── react-native/                   # React Native Bridge
+│   ├── ios/                        # iOS bridge implementation
+│   ├── android/                    # Android bridge implementation
+│   ├── src/                        # TypeScript source
 │   ├── __tests__/
-│   │   ├── unit/               # Unit tests (Jest)
-│   │   └── properties/         # Property-based tests (fast-check)
+│   │   ├── unit/                   # Unit tests (Jest)
+│   │   └── properties/             # Property-based tests (fast-check)
 │   ├── package.json
 │   └── tsconfig.json
 │
-├── examples/                     # Example applications
-│   ├── ios/                     # iOS example app
-│   ├── android/                 # Android example app
-│   └── react-native/            # React Native example app
+├── examples/                       # Example applications
+│   ├── ios/                        # Native iOS example
+│   ├── android/                    # Native Android example
+│   └── react-native/               # React Native example
 │
-└── package.json                 # Root package configuration
+├── LICENSE                         # MIT License (repo root)
+├── README.md                       # This file
+└── package.json                    # Root package configuration
 ```
+
+### For Library Consumers
+
+You don't need to worry about the monorepo structure! Just install the library normally:
+
+**iOS (CocoaPods)**:
+
+```ruby
+pod 'FounderOSMobileTracker', '~> 0.1.0'
+```
+
+**Android (JitPack)**:
+
+```gradle
+implementation 'com.github.founderos:mobile-tracking-sdk:0.1.0'
+```
+
+The package managers handle the monorepo structure automatically.
 
 ## Version Management
 
@@ -682,7 +814,128 @@ The library follows [Semantic Versioning 2.0.0](https://semver.org/). For detail
 
 See [android/VERSION_MANAGEMENT.md](./android/VERSION_MANAGEMENT.md) for the complete guide.
 
+### Creating Releases (For Maintainers)
+
+To publish a new version via JitPack:
+
+**1. Update Version Number**
+
+Edit `android/gradle.properties`:
+
+```properties
+VERSION_NAME=0.2.0
+```
+
+**2. Validate Version**
+
+```bash
+cd android
+./gradlew validateVersion
+```
+
+**3. Test Locally**
+
+```bash
+./gradlew publishToMavenLocal
+cd ../examples/android
+# Test with the published artifact
+```
+
+**4. Commit Changes**
+
+```bash
+git add android/gradle.properties
+git commit -m "Bump version to 0.2.0"
+git push origin main
+```
+
+**5. Create and Push Git Tag**
+
+```bash
+# Create annotated tag (recommended)
+git tag -a v0.2.0 -m "Release version 0.2.0
+
+- Feature: Add new tracking capabilities
+- Fix: Resolve session persistence issue
+- Docs: Update API documentation"
+
+# Push tag to GitHub
+git push origin v0.2.0
+```
+
+**6. Verify JitPack Build**
+
+- Visit [https://jitpack.io/#founderos/mobile-tracking-sdk](https://jitpack.io/#founderos/mobile-tracking-sdk)
+- Check that the new version appears and builds successfully
+- Review build logs if there are any issues
+
+**7. Update Documentation**
+
+Update README and CHANGELOG with the new version number and release notes.
+
+**Tag Naming Convention:**
+
+- Use `v` prefix: `v0.1.0`, `v1.0.0`, `v2.1.3`
+- Match the version in `gradle.properties`
+- Use annotated tags (with `-a` flag) for better Git history
+- Include meaningful release notes in tag message
+
+**Version Resolution:**
+
+Once a tag is pushed, users can reference it in their `build.gradle`:
+
+```gradle
+// Exact version (recommended)
+implementation 'com.github.founderos:mobile-tracking-sdk:0.2.0'
+
+// Or with 'v' prefix (JitPack handles both)
+implementation 'com.github.founderos:mobile-tracking-sdk:v0.2.0'
+```
+
 ## Development
+
+### Local Development
+
+For library contributors and maintainers:
+
+**iOS Local Development**
+
+Both example projects are configured for local CocoaPods development:
+
+```bash
+# Test local changes in React Native
+cd examples/react-native/ios
+pod install
+cd ..
+npx react-native run-ios
+
+# Test local changes in native iOS
+cd examples/ios/MobileTrackerExample
+pod install
+open MobileTrackerExample.xcworkspace
+```
+
+The Podfiles use local path references:
+
+```ruby
+pod 'FounderOSMobileTracker', :path => '../../../ios'
+```
+
+**Run automated local integration tests**:
+
+```bash
+./ios/test-local-integration.sh
+```
+
+For complete local development documentation, see:
+
+- 📖 [ios/LOCAL_DEVELOPMENT.md](ios/LOCAL_DEVELOPMENT.md) - Local CocoaPods development guide
+- 📖 [ios/PUBLISHING.md](ios/PUBLISHING.md) - Publishing guide
+- 📖 [ios/QUICK_REFERENCE.md](ios/QUICK_REFERENCE.md) - Quick reference
+
+**Android Local Development**
+
+See [android/PUBLISHING.md](android/PUBLISHING.md) for Android local development and publishing.
 
 ### Running Tests
 
@@ -726,11 +979,31 @@ npm run test:react-native
 
 - Ensure you have the correct Maven repository configured
 - Check that your `minSdkVersion` is 21 or higher
+- For JitPack: Verify the repository URL is `https://jitpack.io` (not `http://`)
+- Clear Gradle cache: `./gradlew clean --refresh-dependencies`
+
+**Issue**: JitPack dependency not found
+
+- **Check build status**: Visit [https://jitpack.io/#founderos/mobile-tracking-sdk](https://jitpack.io/#founderos/mobile-tracking-sdk)
+- **Verify tag exists**: Run `git tag -l` to list all tags, ensure the version tag was pushed
+- **Wait for build**: First-time builds take 2-5 minutes; refresh the JitPack page
+- **Check version format**: Use `0.1.0` or `v0.1.0` (both work with JitPack)
+- **Review build logs**: Click on the version in JitPack to see detailed build logs
+- **Try commit hash**: If tag build fails, try using the commit hash directly
+
+**Issue**: JitPack build fails
+
+- **Check Gradle version**: Ensure `gradle-wrapper.properties` specifies a compatible version
+- **Verify build.gradle**: Ensure `group` and `version` are properly set
+- **Review dependencies**: Check that all dependencies are available in public repositories
+- **Check JDK version**: Verify `jitpack.yml` specifies the correct JDK (if needed)
+- **Test locally**: Run `./gradlew publishToMavenLocal` to verify the build works
 
 **Issue**: Runtime crashes
 
 - Verify ProGuard rules if using code obfuscation
 - Check that initialization is called before any tracking methods
+- Ensure all required permissions are declared in AndroidManifest.xml
 
 ### React Native
 

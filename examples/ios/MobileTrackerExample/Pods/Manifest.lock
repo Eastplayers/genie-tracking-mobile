@@ -1,0 +1,16 @@
+PODS:
+  - FounderOSMobileTracker (0.1.0)
+
+DEPENDENCIES:
+  - FounderOSMobileTracker (from `../../../ios`)
+
+EXTERNAL SOURCES:
+  FounderOSMobileTracker:
+    :path: "../../../ios"
+
+SPEC CHECKSUMS:
+  FounderOSMobileTracker: c9926f0f4c8df050fb43c328a4381ee2f3347543
+
+PODFILE CHECKSUM: facc8476a460fe70952ea78d2360a1523237ffaf
+
+COCOAPODS: 1.16.2

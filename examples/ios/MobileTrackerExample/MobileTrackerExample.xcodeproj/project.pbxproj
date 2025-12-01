@@ -1,4 +1,4 @@
-// !UTF8*
+// !$*UTF8*$!
 {
 	archiveVersion = 1;
 	classes = {
@@ -7,16 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11F257FA832B416AAD279F62 /* MobileTracker in Frameworks */ = {isa = PBXBuildFile; productRef = 5D55843443DC4356A4341A5B /* MobileTracker */; };
 		4DEB6EC3F3F746E7BC1FC6C5 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB6EC3F3F746E7BC1FC6C500 /* ExampleApp.swift */; };
 		9AD3E6474301456598071EB7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD3E6474301456598071EB700 /* ContentView.swift */; };
+		EF39E761874BB0CB73B17C25 /* Pods_MobileTrackerExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930622ED77D36D0D91A807FC /* Pods_MobileTrackerExample.framework */; };
 		F0C5F4FCE5564EE18C0C081F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0C5F4FCE5564EE18C0C081F00 /* Assets.xcassets */; };
-		11F257FA832B416AAD279F62 /* MobileTracker in Frameworks */ = {isa = PBXBuildFile; productRef = 5D55843443DC4356A4341A5B /* MobileTracker */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4CCFB521555B4FBA85FB007900 /* MobileTrackerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTrackerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DEB6EC3F3F746E7BC1FC6C500 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
+		930622ED77D36D0D91A807FC /* Pods_MobileTrackerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobileTrackerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD3E6474301456598071EB700 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CE8BFBDBB86BBD4B609ED32C /* Pods-MobileTrackerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileTrackerExample.release.xcconfig"; path = "Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample.release.xcconfig"; sourceTree = "<group>"; };
+		DC4B345089CFC32F4995A423 /* Pods-MobileTrackerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileTrackerExample.debug.xcconfig"; path = "Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample.debug.xcconfig"; sourceTree = "<group>"; };
 		F0C5F4FCE5564EE18C0C081F00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -26,18 +30,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				11F257FA832B416AAD279F62 /* MobileTracker in Frameworks */,
+				EF39E761874BB0CB73B17C25 /* Pods_MobileTrackerExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7E848090EA2F45B6A3A2932400 = {
+		3E15A4C94318AC28DAF2F19A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				74B51C0E54154217BDD735C5 /* MobileTrackerExample */,
-				4CCFB521555B4FBA85FB007901 /* Products */,
+				DC4B345089CFC32F4995A423 /* Pods-MobileTrackerExample.debug.xcconfig */,
+				CE8BFBDBB86BBD4B609ED32C /* Pods-MobileTrackerExample.release.xcconfig */,
 			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		4CCFB521555B4FBA85FB007901 /* Products */ = {
@@ -58,6 +65,24 @@
 			path = MobileTrackerExample;
 			sourceTree = "<group>";
 		};
+		7E848090EA2F45B6A3A2932400 = {
+			isa = PBXGroup;
+			children = (
+				74B51C0E54154217BDD735C5 /* MobileTrackerExample */,
+				4CCFB521555B4FBA85FB007901 /* Products */,
+				3E15A4C94318AC28DAF2F19A /* Pods */,
+				8DE96DCCCA782D14A210136A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8DE96DCCCA782D14A210136A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				930622ED77D36D0D91A807FC /* Pods_MobileTrackerExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -65,9 +90,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7296A7EDB47A415581B19F67 /* Build configuration list for PBXNativeTarget "MobileTrackerExample" */;
 			buildPhases = (
+				7A740F0AD6871526F707F3A6 /* [CP] Check Pods Manifest.lock */,
 				FAD827A610E54E1B90A1855C /* Sources */,
 				B6BFBB6AF5BA434F93AE207F /* Frameworks */,
 				82B2746178274BCA928A38AA /* Resources */,
+				8B6903BA2A5CBE30C24A216C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -101,7 +128,7 @@
 			);
 			mainGroup = 7E848090EA2F45B6A3A2932400;
 			packageReferences = (
-				5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "MobileTracker" */,
+				5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "ios" */,
 			);
 			productRefGroup = 4CCFB521555B4FBA85FB007901 /* Products */;
 			projectDirPath = "";
@@ -123,6 +150,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7A740F0AD6871526F707F3A6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MobileTrackerExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8B6903BA2A5CBE30C24A216C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		FAD827A610E54E1B90A1855C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -138,6 +207,7 @@
 /* Begin XCBuildConfiguration section */
 		7296A7EDB47A415581B19F6700 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC4B345089CFC32F4995A423 /* Pods-MobileTrackerExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -167,6 +237,7 @@
 		};
 		7296A7EDB47A415581B19F6701 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE8BFBDBB86BBD4B609ED32C /* Pods-MobileTrackerExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -332,7 +403,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "MobileTracker" */ = {
+		5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "ios" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../../ios;
 		};
@@ -341,7 +412,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		5D55843443DC4356A4341A5B /* MobileTracker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "MobileTracker" */;
+			package = 5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "ios" */;
 			productName = MobileTracker;
 		};
 /* End XCSwiftPackageProductDependency section */

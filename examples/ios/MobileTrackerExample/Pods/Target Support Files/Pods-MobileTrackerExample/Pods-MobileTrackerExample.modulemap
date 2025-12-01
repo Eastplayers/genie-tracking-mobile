@@ -1,0 +1,6 @@
+framework module Pods_MobileTrackerExample {
+  umbrella header "Pods-MobileTrackerExample-umbrella.h"
+
+  export *
+  module * { export * }
+}

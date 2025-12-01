@@ -1,0 +1,6 @@
+framework module FounderOSMobileTracker {
+  umbrella header "FounderOSMobileTracker-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,141 +1,216 @@
-# iOS Implementation - Quick Reference
+# Quick Reference - iOS Library Publishing
 
-## ✅ Status: ALIGNED WITH WEB SCRIPT
+Quick commands and configurations for common tasks.
 
-All critical issues have been fixed. iOS implementation now matches the original web script behavior.
+## Local Development
 
-## 🔥 Key Changes Made
+### Test Local Changes
 
-### 1. Fast Initialization ⚡
+```bash
+# Run integration tests
+./ios/test-local-integration.sh
 
-```swift
-// BEFORE: Blocked until session created
-try await MobileTracker.shared.initialize(brandId: "925", config: config)
-// ❌ Waited for session creation
+# Test in React Native
+cd examples/react-native/ios
+pod install
+cd ..
+npx react-native run-ios
 
-// AFTER: Returns immediately
-try await MobileTracker.shared.initialize(brandId: "925", config: config)
-// ✅ Returns immediately, session created in background
+# Test in native iOS
+cd examples/ios/MobileTrackerExample
+pod install
+open MobileTrackerExample.xcworkspace
 ```
 
-### 2. Event Queueing 📦
+### Podfile Configuration
 
-```swift
-// BEFORE: Events dropped if no session
-await tracker.track(eventName: "TEST")
-// ❌ Event lost if session not ready
+**Local development** (use this while developing):
 
-// AFTER: Events queued automatically
-await tracker.track(eventName: "TEST")
-// ✅ Event queued, sent when session ready
+```ruby
+pod 'FounderOSMobileTracker', :path => '../../../ios'
 ```
 
-### 3. Consent Framework 🔒
+**Published version** (use this in production):
 
-```swift
-// BEFORE: No consent checking
-await tracker.track(eventName: "TEST")
-// ❌ No consent check
-
-// AFTER: Consent checked
-await tracker.track(eventName: "TEST")
-// ✅ Checks isTrackingAllowed() before sending
+```ruby
+pod 'FounderOSMobileTracker', '~> 0.1.0'
 ```
 
-### 4. Cookie Management 🍪
+## Publishing
 
-```swift
-// BEFORE: Cleared all cookies at once
-tracker.reset()
-// ❌ No selective clearing
+### CocoaPods Publishing
 
-// AFTER: Selective cookie clearing
-tracker.reset(all: false)  // Keeps brand_id
-tracker.reset(all: true)   // Clears everything
-// ✅ Matches web behavior
+```bash
+# 1. Update version
+vim ios/FounderOSMobileTracker.podspec  # Change s.version
+
+# 2. Validate
+pod spec lint ios/FounderOSMobileTracker.podspec --allow-warnings
+
+# 3. Commit and tag
+git add ios/FounderOSMobileTracker.podspec
+git commit -m "Bump version to 0.1.x"
+git push
+git tag v0.1.x
+git push origin v0.1.x
+
+# 4. Publish
+./ios/publish-cocoapods.sh
 ```
 
-## 📊 Alignment Matrix
+### Swift Package Manager
 
-| Feature       | Web | iOS Before | iOS After |
-| ------------- | --- | ---------- | --------- |
-| Fast Init     | ✅  | ❌         | ✅        |
-| Async Session | ✅  | ❌         | ✅        |
-| Event Queue   | ✅  | ❌         | ✅        |
-| Consent       | ✅  | ❌         | ✅        |
-| Cookie Clear  | ✅  | ❌         | ✅        |
-
-## 🎯 What This Means
-
-### For Developers:
-
-- ✅ Faster app startup (non-blocking init)
-- ✅ No lost events (automatic queueing)
-- ✅ Better error handling
-- ✅ Consistent behavior with web
-
-### For Users:
-
-- ✅ Faster app launch
-- ✅ More reliable tracking
-- ✅ Better privacy controls (consent)
-
-## 📝 Files Changed
-
-1. **`ios/MobileTracker/MobileTracker.swift`**
-
-   - Added `createSessionAsync()` method
-   - Added `isTrackingAllowed()` method
-   - Updated `track()` to queue events
-   - Updated `identify()`, `set()`, `setMetadata()` with consent
-   - Updated `reset()` for selective clearing
-
-2. **`ios/MobileTracker/ApiClient.swift`**
-   - Added `clearCookieByName()` public method
-
-## 🧪 Quick Test
-
-```swift
-import MobileTracker
-
-// 1. Initialize (should return immediately)
-let config = TrackerConfig(
-    debug: true,
-    apiUrl: "https://api.example.com",
-    xApiKey: "your-key"
-)
-
-try await MobileTracker.shared.initialize(brandId: "925", config: config)
-print("✅ Initialized immediately")
-
-// 2. Track event (should queue if session not ready)
-await MobileTracker.shared.track(eventName: "APP_OPENED")
-print("✅ Event tracked/queued")
-
-// 3. Identify user
-await MobileTracker.shared.identify(userId: "user123", profileData: [
-    "email": "user@example.com"
-])
-print("✅ User identified")
-
-// 4. Reset (selective)
-MobileTracker.shared.reset(all: false)
-print("✅ Session reset, brand kept")
+```bash
+# Just create and push a tag
+git tag v0.1.x
+git push origin v0.1.x
 ```
 
-## 📚 Documentation
+## Verification
 
-- **Detailed Analysis**: `ios/IOS_WEB_ALIGNMENT_FIXES.md`
-- **Applied Fixes**: `ios/IOS_FIXES_APPLIED.md`
-- **Complete Summary**: `IOS_ALIGNMENT_COMPLETE.md`
-- **Quick Reference**: `ios/QUICK_REFERENCE.md` (this file)
+### Check Pod Installation
 
-## ✨ Bottom Line
+```bash
+# Verify local pod is being used
+cat Podfile.lock | grep -A 3 "EXTERNAL SOURCES"
 
-**iOS SDK now behaves identically to the web script.**
+# Should show:
+# EXTERNAL SOURCES:
+#   FounderOSMobileTracker:
+#     :path: "../../../ios"
+```
 
-All methods, initialization flow, event handling, and storage management match the original web implementation exactly.
+### Check Published Pod
 
----
+```bash
+# Update local specs
+pod repo update
 
-**Need more details?** Check the full documentation files listed above.
+# Search for pod
+pod search FounderOSMobileTracker
+
+# Check specific version
+pod spec cat FounderOSMobileTracker/0.1.0
+```
+
+## Troubleshooting
+
+### Changes Not Reflected
+
+```bash
+# Clean and reinstall
+rm -rf Pods/ Podfile.lock
+pod install
+
+# In Xcode: Product → Clean Build Folder (⌘⇧K)
+```
+
+### Pod Not Found
+
+```bash
+# Verify path is correct
+ls -la ../../../ios/FounderOSMobileTracker.podspec
+
+# Check Podfile syntax
+cat Podfile | grep FounderOS
+```
+
+### Build Errors
+
+```bash
+# Validate podspec
+pod spec lint ios/FounderOSMobileTracker.podspec --verbose
+
+# Check Swift version
+swift --version  # Should be 5.5+
+
+# Run library tests
+cd ios
+swift test
+```
+
+## File Locations
+
+```
+ios/
+├── FounderOSMobileTracker.podspec    # CocoaPods spec
+├── Package.swift                      # SPM manifest
+├── PUBLISHING.md                      # Full publishing guide
+├── LOCAL_DEVELOPMENT.md               # Local development guide
+├── QUICK_REFERENCE.md                 # This file
+├── publish-cocoapods.sh               # Publishing script
+├── test-local-integration.sh          # Test script
+└── MobileTracker/                     # Source code
+    ├── MobileTracker.swift
+    ├── Configuration.swift
+    └── ...
+
+examples/
+├── ios/MobileTrackerExample/          # Native iOS example
+│   └── Podfile                        # Uses :path => '../../../ios'
+└── react-native/ios/                  # React Native example
+    └── Podfile                        # Uses :path => '../../../ios'
+```
+
+## Version Management
+
+### Semantic Versioning
+
+- **MAJOR**: Breaking changes (1.0.0 → 2.0.0)
+- **MINOR**: New features (1.0.0 → 1.1.0)
+- **PATCH**: Bug fixes (1.0.0 → 1.0.1)
+
+### Files to Update
+
+When bumping version:
+
+- [ ] `ios/FounderOSMobileTracker.podspec` → `s.version`
+- [ ] Git tag → `v0.1.x`
+- [ ] CHANGELOG.md (if exists)
+
+## Import Statements
+
+### CocoaPods
+
+```swift
+import FounderOSMobileTracker
+```
+
+### Swift Package Manager
+
+```swift
+import MobileTracker  // Note: Different from CocoaPods!
+```
+
+## Useful Commands
+
+```bash
+# CocoaPods
+pod --version                          # Check CocoaPods version
+pod trunk me                           # Check registration
+pod repo update                        # Update local specs
+pod cache clean --all                  # Clear cache
+
+# Git
+git tag -l                             # List tags
+git tag -d v0.1.0                      # Delete local tag
+git push origin :refs/tags/v0.1.0     # Delete remote tag
+
+# Xcode
+xcodebuild -version                    # Check Xcode version
+xcodebuild -showsdks                   # Show available SDKs
+xcrun simctl list devices              # List simulators
+```
+
+## Documentation
+
+- **Full Publishing Guide**: [PUBLISHING.md](PUBLISHING.md)
+- **Local Development**: [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md)
+- **CocoaPods Guides**: https://guides.cocoapods.org/
+- **Swift Package Manager**: https://swift.org/package-manager/
+
+## Support
+
+- **founder-os.ai**: https://founder-os.ai
+- **Email**: contact@founder-os.ai
+- **Repository**: https://github.com/Eastplayers/genie-tracking-mobile
