@@ -11,8 +11,17 @@ import {
   Alert,
 } from 'react-native'
 import MobileTracker from '@mobiletracker/react-native'
+import { ConfigurationScreen } from './src/ConfigurationScreen'
+import { useConfigurationManager } from './src/useConfigurationManager'
+import { TrackerConfiguration } from './src/configurationManager'
 
-function App(): React.JSX.Element {
+function DemoScreen({
+  onSettings,
+  currentConfig,
+}: {
+  onSettings: () => void
+  currentConfig: TrackerConfiguration | null
+}): React.JSX.Element {
   const [userId, setUserId] = useState('')
   const [eventName, setEventName] = useState('')
   const [screenName, setScreenName] = useState('')
@@ -21,48 +30,6 @@ function App(): React.JSX.Element {
   const [profileName, setProfileName] = useState('')
   const [profileEmail, setProfileEmail] = useState('')
   const [statusMessage, setStatusMessage] = useState('Ready to track events')
-
-  useEffect(() => {
-    // Initialize the SDK when the app loads
-    // Configuration is loaded from .env file via react-native-config
-    const initializeSDK = async () => {
-      try {
-        // For now using process.env (will work with react-native-config or react-native-dotenv)
-        const brandId = process.env.BRAND_ID || ''
-        const apiKey = process.env.X_API_KEY || ''
-        const apiUrl = process.env.API_URL // Optional, will use default if not provided
-
-        if (!brandId || !apiKey) {
-          throw new Error(
-            'BRAND_ID and X_API_KEY are required. Check your .env file.'
-          )
-        }
-
-        console.log('🔄 Starting MobileTracker initialization...')
-        console.log('   Brand ID:', brandId)
-        console.log('   API URL:', apiUrl || 'default')
-        console.log('   API Key:', apiKey.substring(0, 8) + '...')
-
-        await MobileTracker.init({
-          apiKey: brandId, // Brand ID is passed as apiKey for React Native bridge
-          endpoint: apiUrl, // Optional, will use default if not provided
-          debug: true,
-          x_api_key: apiKey, // Actual API key for authentication
-        })
-        console.log('✅ MobileTracker initialized successfully')
-        setStatusMessage('✅ SDK initialized successfully')
-      } catch (error) {
-        console.error('❌ Failed to initialize MobileTracker:', error)
-        setStatusMessage('❌ Failed to initialize SDK')
-        Alert.alert(
-          'Initialization Error',
-          'Failed to initialize MobileTracker SDK'
-        )
-      }
-    }
-
-    initializeSDK()
-  }, [])
 
   const handleIdentify = () => {
     if (!userId.trim()) {
@@ -229,7 +196,12 @@ function App(): React.JSX.Element {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>MobileTracker Demo</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>MobileTracker Demo</Text>
+          <TouchableOpacity style={styles.settingsButton} onPress={onSettings}>
+            <Text style={styles.settingsButtonText}>⚙️ Settings</Text>
+          </TouchableOpacity>
+        </View>
 
         {/* Status Message */}
         <View style={styles.statusCard}>
@@ -387,19 +359,156 @@ function App(): React.JSX.Element {
   )
 }
 
+function App(): React.JSX.Element {
+  const [isInitialized, setIsInitialized] = useState(false)
+  const [showConfigScreen, setShowConfigScreen] = useState(false)
+  const [currentConfig, setCurrentConfig] =
+    useState<TrackerConfiguration | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const configManager = useConfigurationManager()
+
+  useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        const savedConfig = await configManager.loadConfiguration()
+        if (savedConfig) {
+          setCurrentConfig(savedConfig)
+          await initializeTracker(savedConfig)
+          setIsInitialized(true)
+          setShowConfigScreen(false)
+        } else {
+          setShowConfigScreen(true)
+        }
+      } catch (error) {
+        console.error('Failed to load configuration:', error)
+        setShowConfigScreen(true)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    initializeApp()
+  }, [])
+
+  const initializeTracker = async (config: TrackerConfiguration) => {
+    try {
+      const apiUrl = configManager.getApiUrl(config.environment)
+      console.log('🔄 Starting MobileTracker initialization...')
+      console.log('   Brand ID:', config.brandId)
+      console.log('   API URL:', apiUrl)
+      console.log('   API Key:', config.apiKey.substring(0, 8) + '...')
+
+      await MobileTracker.init({
+        apiKey: config.brandId,
+        endpoint: apiUrl,
+        debug: true,
+        x_api_key: config.apiKey,
+      })
+
+      if (config.userId) {
+        MobileTracker.identify(config.userId)
+      }
+
+      console.log('✅ MobileTracker initialized successfully')
+    } catch (error) {
+      console.error('❌ Failed to initialize MobileTracker:', error)
+      throw error
+    }
+  }
+
+  const handleInitialize = async (config: TrackerConfiguration) => {
+    try {
+      await configManager.saveConfiguration(config)
+      setCurrentConfig(config)
+      await initializeTracker(config)
+      setIsInitialized(true)
+      setShowConfigScreen(false)
+    } catch (error) {
+      console.error('Failed to initialize:', error)
+      throw error
+    }
+  }
+
+  const handleReconfigure = async (config: TrackerConfiguration) => {
+    try {
+      MobileTracker.reset(true)
+      await handleInitialize(config)
+    } catch (error) {
+      console.error('Failed to reconfigure:', error)
+      throw error
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.centerContainer}>
+          <Text style={styles.loadingText}>Loading configuration...</Text>
+        </View>
+      </SafeAreaView>
+    )
+  }
+
+  if (showConfigScreen) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        <ConfigurationScreen
+          onInitialize={handleInitialize}
+          initialValues={currentConfig || undefined}
+        />
+      </SafeAreaView>
+    )
+  }
+
+  return (
+    <DemoScreen
+      onSettings={() => setShowConfigScreen(true)}
+      currentConfig={currentConfig}
+    />
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#666',
+  },
   scrollContent: {
     padding: 16,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
+    color: '#333',
+    flex: 1,
+  },
+  settingsButton: {
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  settingsButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
     color: '#333',
   },
   statusCard: {

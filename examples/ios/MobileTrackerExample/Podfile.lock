@@ -1,5 +1,5 @@
 PODS:
-  - FounderOSMobileTracker (0.1.0)
+  - FounderOSMobileTracker (0.1.3)
 
 DEPENDENCIES:
   - FounderOSMobileTracker (from `../../../ios`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../../../ios"
 
 SPEC CHECKSUMS:
-  FounderOSMobileTracker: c9926f0f4c8df050fb43c328a4381ee2f3347543
+  FounderOSMobileTracker: a954f352eba17b6b8e194aa73265c02a8db45d5d
 
 PODFILE CHECKSUM: facc8476a460fe70952ea78d2360a1523237ffaf
 

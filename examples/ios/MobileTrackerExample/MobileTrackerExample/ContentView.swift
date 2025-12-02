@@ -2,6 +2,8 @@ import SwiftUI
 import MobileTracker
 
 struct ContentView: View {
+    @StateObject private var configManager = ConfigurationManager()
+    
     @State private var userId: String = ""
     @State private var eventName: String = ""
     @State private var screenName: String = ""
@@ -10,6 +12,21 @@ struct ContentView: View {
     @State private var profileName: String = ""
     @State private var profileEmail: String = ""
     @State private var statusMessage: String = "Ready to track events"
+    
+    @State private var showConfigurationSheet: Bool = false
+    
+    /// Callback for when user resets all data
+    var onResetAll: (() -> Void)?
+    
+    init(onResetAll: (() -> Void)? = nil) {
+        self.onResetAll = onResetAll
+        // Load persisted user data on initialization
+        if let userData = UserDataManager.loadUserData() {
+            _userId = State(initialValue: userData.userId)
+            _profileName = State(initialValue: userData.name)
+            _profileEmail = State(initialValue: userData.email)
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -42,6 +59,29 @@ struct ContentView: View {
                     }
                     .padding()
                     .background(Color.blue.opacity(0.1))
+                    .cornerRadius(12)
+
+                    // Update Profile Section
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Update Profile (set)")
+                            .font(.headline)
+                        
+                        TextField("Name", text: $profileName)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
+                        TextField("Email", text: $profileEmail)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
+                        Button(action: updateProfile) {
+                            Label("Update Profile", systemImage: "person.crop.circle.badge.checkmark")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.cyan)
+                        .disabled(profileName.isEmpty && profileEmail.isEmpty)
+                    }
+                    .padding()
+                    .background(Color.cyan.opacity(0.1))
                     .cornerRadius(12)
                     
                     // Track Event Section
@@ -107,29 +147,6 @@ struct ContentView: View {
                     .background(Color.indigo.opacity(0.1))
                     .cornerRadius(12)
                     
-                    // Update Profile Section
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Update Profile (set)")
-                            .font(.headline)
-                        
-                        TextField("Name", text: $profileName)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        
-                        TextField("Email", text: $profileEmail)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        
-                        Button(action: updateProfile) {
-                            Label("Update Profile", systemImage: "person.crop.circle.badge.checkmark")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.cyan)
-                        .disabled(profileName.isEmpty && profileEmail.isEmpty)
-                    }
-                    .padding()
-                    .background(Color.cyan.opacity(0.1))
-                    .cornerRadius(12)
-                    
                     // Quick Actions
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Quick Actions")
@@ -163,7 +180,7 @@ struct ContentView: View {
                             .font(.headline)
                         
                         Button(action: resetTracking) {
-                            Label("Reset Session", systemImage: "arrow.counterclockwise")
+                            Label("Reset Session (Keep Brand ID)", systemImage: "arrow.counterclockwise")
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.bordered)
@@ -183,6 +200,20 @@ struct ContentView: View {
                 .padding()
             }
             .navigationTitle("MobileTracker Demo")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showConfigurationSheet = true }) {
+                        Image(systemName: "gear")
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showConfigurationSheet) {
+            ConfigurationView { config in
+                reconfigureTracker(with: config)
+            }
         }
     }
     
@@ -197,6 +228,8 @@ struct ContentView: View {
         
         Task {
             await MobileTracker.shared.identify(userId: userId, profileData: profileData)
+            // Save user data for future sessions
+            UserDataManager.saveUserData(userId: userId, name: profileName, email: profileEmail)
             statusMessage = "✅ Identified user: \(userId)"
             print("Identified user: \(userId) with profileData: \(profileData)")
         }
@@ -302,23 +335,72 @@ struct ContentView: View {
         
         Task {
             await MobileTracker.shared.set(profileData: profileData)
+            // Save user data for future sessions
+            UserDataManager.saveUserData(userId: userId, name: profileName, email: profileEmail)
             statusMessage = "✅ Profile updated"
             print("Updated profile: \(profileData)")
-            profileName = ""
-            profileEmail = ""
+            // profileName = ""
+            // profileEmail = ""
         }
     }
     
     private func resetTracking() {
         MobileTracker.shared.reset(all: false)
+        // Clear user data when resetting session
+        UserDataManager.clearUserData()
         statusMessage = "✅ Session reset (Brand ID preserved)"
         print("Reset tracking session")
     }
     
     private func resetAll() {
         MobileTracker.shared.reset(all: true)
-        statusMessage = "✅ All tracking data reset"
+        // Clear user data when resetting all
+        UserDataManager.clearUserData()
+        statusMessage = "✅ All tracking data reset - returning to configuration"
         print("Reset all tracking data including Brand ID")
+        // Call the callback to clear configuration and return to configuration screen
+        onResetAll?()
+    }
+    
+    // MARK: - Reconfiguration
+    
+    /// Reconfigure the tracker with new configuration
+    /// - Parameter config: The new TrackerConfiguration to use
+    private func reconfigureTracker(with config: TrackerConfiguration) {
+        // Reset the tracker
+        MobileTracker.shared.reset(all: true)
+        
+        // Save new configuration to UserDefaults
+        configManager.saveConfiguration(config)
+        
+        // Reinitialize tracker with new configuration
+        Task {
+            do {
+                print("🔄 Reinitializing MobileTracker with new configuration...")
+                print("   Brand ID: \(config.brandId)")
+                print("   API URL: \(config.apiUrl)")
+                
+                try await MobileTracker.shared.initialize(
+                    brandId: config.brandId,
+                    config: TrackerConfig(
+                        debug: true,
+                        apiUrl: config.apiUrl,
+                        xApiKey: config.apiKey
+                    )
+                )
+                
+                print("✅ MobileTracker reinitialized successfully")
+                
+                // Dismiss the configuration sheet
+                DispatchQueue.main.async {
+                    showConfigurationSheet = false
+                    statusMessage = "✅ Configuration updated and tracker reinitialized"
+                }
+            } catch {
+                print("❌ Failed to reinitialize MobileTracker: \(error)")
+                statusMessage = "❌ Failed to reconfigure: \(error.localizedDescription)"
+            }
+        }
     }
 }
 

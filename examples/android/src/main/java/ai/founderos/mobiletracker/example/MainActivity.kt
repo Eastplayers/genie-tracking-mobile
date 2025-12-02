@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,40 +16,8 @@ import ai.founderos.mobiletracker.MobileTracker
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private var isInitialized by mutableStateOf(false)
-    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // Initialize the SDK when activity is created
-        // Configuration is loaded from local.env file via BuildConfig
-        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
-            try {
-                // Validate configuration
-                Config.validate()
-                
-                println("🔄 Starting MobileTracker initialization...")
-                println("   Brand ID: ${Config.brandId}")
-                println("   API URL: ${Config.apiUrl ?: "default"}")
-                println("   API Key: ${Config.xApiKey?.take(8)}...")
-                
-                MobileTracker.getInstance().initialize(
-                    context = applicationContext,
-                    brandId = Config.brandId,
-                    config = ai.founderos.mobiletracker.TrackerConfig(
-                        debug = Config.debug,
-                        apiUrl = Config.apiUrl,
-                        xApiKey = Config.xApiKey
-                    )
-                )
-                println("✅ MobileTracker initialized successfully")
-                isInitialized = true
-            } catch (e: Exception) {
-                println("❌ Failed to initialize MobileTracker: ${e.message}")
-                e.printStackTrace()
-                isInitialized = false
-            }
-        }
         
         setContent {
             MaterialTheme {
@@ -55,16 +25,157 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MobileTrackerExampleApp(isInitialized)
+                    MainActivityContent(applicationContext)
                 }
             }
         }
     }
 }
 
+/**
+ * Main content composable that handles screen transitions and initialization
+ * 
+ * Requirements: 1.1, 1.6, 2.2, 2.3
+ */
+@Composable
+fun MainActivityContent(context: android.content.Context) {
+    // State management for screen transitions
+    var isInitialized by remember { mutableStateOf(false) }
+    var showConfigurationScreen by remember { mutableStateOf(false) }
+    var currentConfiguration by remember { mutableStateOf<TrackerConfiguration?>(null) }
+    var initializationError by remember { mutableStateOf("") }
+    var isReconfiguring by remember { mutableStateOf(false) }
+    
+    // Check for persisted configuration on first composition
+    LaunchedEffect(Unit) {
+        val persistedConfig = ConfigurationManager.loadConfiguration(context)
+        if (persistedConfig != null) {
+            // Configuration exists, initialize automatically
+            currentConfiguration = persistedConfig
+            initializeTracker(context, persistedConfig) { success, error ->
+                if (success) {
+                    isInitialized = true
+                    showConfigurationScreen = false
+                } else {
+                    initializationError = error
+                    showConfigurationScreen = true
+                }
+            }
+        } else {
+            // No configuration exists, show configuration screen
+            showConfigurationScreen = true
+        }
+    }
+    
+    if (showConfigurationScreen) {
+        ConfigurationScreen(
+            onInitialize = { config ->
+                // Validate configuration
+                val validationResult = config.validate()
+                when (validationResult) {
+                    is ValidationResult.Valid -> {
+                        // Check if this is a reconfiguration (configuration changed)
+                        val configChanged = currentConfiguration != null && currentConfiguration != config
+                        
+                        if (configChanged && isInitialized) {
+                            // Reset tracker before reinitializing with new configuration
+                            // Requirements: 3.3, 3.4
+                            MobileTracker.getInstance().reset(true)
+                            isReconfiguring = true
+                        }
+                        
+                        // Save configuration to SharedPreferences
+                        ConfigurationManager.saveConfiguration(context, config)
+                        currentConfiguration = config
+                        
+                        // Initialize tracker
+                        initializeTracker(context, config) { success, error ->
+                            if (success) {
+                                isInitialized = true
+                                showConfigurationScreen = false
+                                initializationError = ""
+                                isReconfiguring = false
+                            } else {
+                                initializationError = error
+                                isReconfiguring = false
+                            }
+                        }
+                    }
+                    is ValidationResult.Error -> {
+                        initializationError = validationResult.message
+                    }
+                }
+            },
+            initialConfig = currentConfiguration
+        )
+    } else if (isInitialized) {
+        MobileTrackerExampleApp(
+            isInitialized = true,
+            onSettingsClick = {
+                showConfigurationScreen = true
+            },
+            onResetAll = {
+                if (context != null) {
+                    ConfigurationManager.clearConfiguration(context)
+                    UserDataManager.clearUserData(context)
+                }
+                isInitialized = false
+                showConfigurationScreen = true
+                currentConfiguration = null
+            },
+            context = context
+        )
+    }
+}
+
+/**
+ * Initialize the MobileTracker SDK with the given configuration
+ * 
+ * Requirements: 1.2, 1.6, 2.1
+ * 
+ * @param context Android context
+ * @param config The tracker configuration
+ * @param callback Callback with success status and error message
+ */
+private fun initializeTracker(
+    context: android.content.Context,
+    config: TrackerConfiguration,
+    callback: (success: Boolean, error: String) -> Unit
+) {
+    kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+        try {
+            println("🔄 Starting MobileTracker initialization...")
+            println("   Brand ID: ${config.brandId}")
+            println("   API URL: ${config.apiUrl}")
+            println("   API Key: ${config.apiKey.take(8)}...")
+            
+            MobileTracker.getInstance().initialize(
+                context = context,
+                brandId = config.brandId,
+                config = ai.founderos.mobiletracker.TrackerConfig(
+                    debug = true,
+                    apiUrl = config.apiUrl,
+                    xApiKey = config.apiKey
+                )
+            )
+            println("✅ MobileTracker initialized successfully")
+            callback(true, "")
+        } catch (e: Exception) {
+            println("❌ Failed to initialize MobileTracker: ${e.message}")
+            e.printStackTrace()
+            callback(false, "Failed to initialize: ${e.message}")
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MobileTrackerExampleApp(isInitialized: Boolean) {
+fun MobileTrackerExampleApp(
+    isInitialized: Boolean,
+    onSettingsClick: (() -> Unit)? = null,
+    onResetAll: (() -> Unit)? = null,
+    context: android.content.Context? = null
+) {
     var userId by remember { mutableStateOf("") }
     var eventName by remember { mutableStateOf("") }
     var screenName by remember { mutableStateOf("") }
@@ -74,6 +185,18 @@ fun MobileTrackerExampleApp(isInitialized: Boolean) {
     var profileEmail by remember { mutableStateOf("") }
     var statusMessage by remember { mutableStateOf(if (isInitialized) "Ready to track events" else "Initializing...") }
     val coroutineScope = rememberCoroutineScope()
+    
+    // Load persisted user data on first composition
+    LaunchedEffect(Unit) {
+        if (context != null) {
+            val userData = UserDataManager.loadUserData(context)
+            if (userData != null) {
+                userId = userData.userId
+                profileName = userData.name
+                profileEmail = userData.email
+            }
+        }
+    }
     
     // Update status message when initialization completes
     LaunchedEffect(isInitialized) {
@@ -86,6 +209,16 @@ fun MobileTrackerExampleApp(isInitialized: Boolean) {
         topBar = {
             TopAppBar(
                 title = { Text("MobileTracker Demo") },
+                actions = {
+                    if (isInitialized && onSettingsClick != null) {
+                        IconButton(onClick = onSettingsClick) {
+                            Icon(
+                                imageVector = androidx.compose.material.icons.Icons.Default.Settings,
+                                contentDescription = "Settings"
+                            )
+                        }
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -139,21 +272,78 @@ fun MobileTrackerExampleApp(isInitialized: Boolean) {
                     Button(
                         onClick = {
                             coroutineScope.launch {
-                                val traits = mapOf(
-                                    "email" to "${userId}@example.com",
-                                    "plan" to "premium",
-                                    "signupDate" to System.currentTimeMillis()
-                                )
-                                
-                                MobileTracker.getInstance().identify(userId, traits)
+                                MobileTracker.getInstance().identify(userId)
+                                // Save user data for future sessions
+                                if (context != null) {
+                                    UserDataManager.saveUserData(context, userId, profileName, profileEmail)
+                                }
                                 statusMessage = "✅ Identified user: $userId"
-                                println("Identified user: $userId with traits: $traits")
+                                println("Identified user: $userId")
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = isInitialized && userId.isNotEmpty()
                     ) {
                         Text("Identify")
+                    }
+                }
+            }
+
+            // Update Profile Section
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Update Profile (set)",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    
+                    OutlinedTextField(
+                        value = profileName,
+                        onValueChange = { profileName = it },
+                        label = { Text("Name") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    
+                    OutlinedTextField(
+                        value = profileEmail,
+                        onValueChange = { profileEmail = it },
+                        label = { Text("Email") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    
+                    Button(
+                        onClick = {
+                            coroutineScope.launch {
+                                val profileData = mutableMapOf<String, Any>()
+                                if (profileName.isNotEmpty()) {
+                                    profileData["name"] = profileName
+                                }
+                                if (profileEmail.isNotEmpty()) {
+                                    profileData["email"] = profileEmail
+                                }
+                                
+                                MobileTracker.getInstance().set(profileData)
+                                // Save user data for future sessions
+                                if (context != null) {
+                                    UserDataManager.saveUserData(context, userId, profileName, profileEmail)
+                                }
+                                statusMessage = "✅ Profile updated"
+                                println("Updated profile: $profileData")
+                                // profileName = ""
+                                // profileEmail = ""
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = profileName.isNotEmpty() || profileEmail.isNotEmpty()
+                    ) {
+                        Text("Update Profile")
                     }
                 }
             }
@@ -314,61 +504,6 @@ fun MobileTrackerExampleApp(isInitialized: Boolean) {
                 }
             }
             
-            // Update Profile Section
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "Update Profile (set)",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    
-                    OutlinedTextField(
-                        value = profileName,
-                        onValueChange = { profileName = it },
-                        label = { Text("Name") },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    
-                    OutlinedTextField(
-                        value = profileEmail,
-                        onValueChange = { profileEmail = it },
-                        label = { Text("Email") },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                val profileData = mutableMapOf<String, Any>()
-                                if (profileName.isNotEmpty()) {
-                                    profileData["name"] = profileName
-                                }
-                                if (profileEmail.isNotEmpty()) {
-                                    profileData["email"] = profileEmail
-                                }
-                                
-                                MobileTracker.getInstance().set(profileData)
-                                statusMessage = "✅ Profile updated"
-                                println("Updated profile: $profileData")
-                                profileName = ""
-                                profileEmail = ""
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = profileName.isNotEmpty() || profileEmail.isNotEmpty()
-                    ) {
-                        Text("Update Profile")
-                    }
-                }
-            }
-            
             // Quick Actions
             Card {
                 Column(
@@ -459,6 +594,10 @@ fun MobileTrackerExampleApp(isInitialized: Boolean) {
                     OutlinedButton(
                         onClick = {
                             MobileTracker.getInstance().reset(false)
+                            // Clear user data when resetting session
+                            if (context != null) {
+                                UserDataManager.clearUserData(context)
+                            }
                             statusMessage = "✅ Session reset (Brand ID preserved)"
                             println("Reset tracking session")
                         },
@@ -467,14 +606,20 @@ fun MobileTrackerExampleApp(isInitialized: Boolean) {
                             contentColor = MaterialTheme.colorScheme.error
                         )
                     ) {
-                        Text("Reset Session")
+                        Text("Reset Session (Keep Brand ID)")
                     }
                     
                     OutlinedButton(
                         onClick = {
                             MobileTracker.getInstance().reset(true)
-                            statusMessage = "✅ All tracking data reset"
+                            // Clear user data when resetting all
+                            if (context != null) {
+                                UserDataManager.clearUserData(context)
+                            }
+                            statusMessage = "✅ All tracking data reset - returning to configuration"
                             println("Reset all tracking data including Brand ID")
+                            // Call the callback to clear configuration and return to configuration screen
+                            onResetAll?.invoke()
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.outlinedButtonColors(

@@ -3,24 +3,38 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		11F257FA832B416AAD279F62 /* MobileTracker in Frameworks */ = {isa = PBXBuildFile; productRef = 5D55843443DC4356A4341A5B /* MobileTracker */; };
 		4DEB6EC3F3F746E7BC1FC6C5 /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEB6EC3F3F746E7BC1FC6C500 /* ExampleApp.swift */; };
 		9AD3E6474301456598071EB7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD3E6474301456598071EB700 /* ContentView.swift */; };
-		EF39E761874BB0CB73B17C25 /* Pods_MobileTrackerExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930622ED77D36D0D91A807FC /* Pods_MobileTrackerExample.framework */; };
+		DFDDFB002EDF6CB0000676A2 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDDFAFC2EDF6CB0000676A2 /* Environment.swift */; };
+		DFDDFB012EDF6CB0000676A2 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDDFAFA2EDF6CB0000676A2 /* ConfigurationManager.swift */; };
+		DFDDFB022EDF6CB0000676A2 /* TrackerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDDFAFD2EDF6CB0000676A2 /* TrackerConfiguration.swift */; };
+		DFDDFB032EDF6CB0000676A2 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDDFAFB2EDF6CB0000676A2 /* ConfigurationView.swift */; };
+		DFDDFB042EDF6CB0000676A2 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDDFAFE2EDF6CB0000676A2 /* UserDefaultsKeys.swift */; };
+		DFDDFB052EDF6CB0000676A2 /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDDFAFF2EDF6CB0000676A2 /* ValidationResult.swift */; };
+		DFDDFB072EDF6D42000676A2 /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDDFB062EDF6D42000676A2 /* UserDataManager.swift */; };
 		F0C5F4FCE5564EE18C0C081F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0C5F4FCE5564EE18C0C081F00 /* Assets.xcassets */; };
+		FF8F882D6E2A833B7A31BB83 /* Pods_MobileTrackerExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1E8A7A6B43B63FEA9F9EB8 /* Pods_MobileTrackerExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4CCFB521555B4FBA85FB007900 /* MobileTrackerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileTrackerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DEB6EC3F3F746E7BC1FC6C500 /* ExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleApp.swift; sourceTree = "<group>"; };
-		930622ED77D36D0D91A807FC /* Pods_MobileTrackerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobileTrackerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C1E8A7A6B43B63FEA9F9EB8 /* Pods_MobileTrackerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobileTrackerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD3E6474301456598071EB700 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		CE8BFBDBB86BBD4B609ED32C /* Pods-MobileTrackerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileTrackerExample.release.xcconfig"; path = "Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample.release.xcconfig"; sourceTree = "<group>"; };
-		DC4B345089CFC32F4995A423 /* Pods-MobileTrackerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileTrackerExample.debug.xcconfig"; path = "Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample.debug.xcconfig"; sourceTree = "<group>"; };
+		B7AD246AC1EE1F0C36355CE2 /* Pods-MobileTrackerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileTrackerExample.debug.xcconfig"; path = "Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample.debug.xcconfig"; sourceTree = "<group>"; };
+		BA34C60313A69BB03D76E6F1 /* Pods-MobileTrackerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileTrackerExample.release.xcconfig"; path = "Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample.release.xcconfig"; sourceTree = "<group>"; };
+		DFDDFAFA2EDF6CB0000676A2 /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConfigurationManager.swift; path = MobileTrackerExample/ConfigurationManager.swift; sourceTree = "<group>"; };
+		DFDDFAFB2EDF6CB0000676A2 /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConfigurationView.swift; path = MobileTrackerExample/ConfigurationView.swift; sourceTree = "<group>"; };
+		DFDDFAFC2EDF6CB0000676A2 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Environment.swift; path = MobileTrackerExample/Models/Environment.swift; sourceTree = "<group>"; };
+		DFDDFAFD2EDF6CB0000676A2 /* TrackerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TrackerConfiguration.swift; path = MobileTrackerExample/Models/TrackerConfiguration.swift; sourceTree = "<group>"; };
+		DFDDFAFE2EDF6CB0000676A2 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserDefaultsKeys.swift; path = MobileTrackerExample/Models/UserDefaultsKeys.swift; sourceTree = "<group>"; };
+		DFDDFAFF2EDF6CB0000676A2 /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ValidationResult.swift; path = MobileTrackerExample/Models/ValidationResult.swift; sourceTree = "<group>"; };
+		DFDDFB062EDF6D42000676A2 /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserDataManager.swift; path = MobileTrackerExample/UserDataManager.swift; sourceTree = "<group>"; };
 		F0C5F4FCE5564EE18C0C081F00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -30,20 +44,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				11F257FA832B416AAD279F62 /* MobileTracker in Frameworks */,
-				EF39E761874BB0CB73B17C25 /* Pods_MobileTrackerExample.framework in Frameworks */,
+				FF8F882D6E2A833B7A31BB83 /* Pods_MobileTrackerExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0AF704BD8F488DE67CEAA7F6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6C1E8A7A6B43B63FEA9F9EB8 /* Pods_MobileTrackerExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3E15A4C94318AC28DAF2F19A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DC4B345089CFC32F4995A423 /* Pods-MobileTrackerExample.debug.xcconfig */,
-				CE8BFBDBB86BBD4B609ED32C /* Pods-MobileTrackerExample.release.xcconfig */,
+				B7AD246AC1EE1F0C36355CE2 /* Pods-MobileTrackerExample.debug.xcconfig */,
+				BA34C60313A69BB03D76E6F1 /* Pods-MobileTrackerExample.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -68,19 +89,18 @@
 		7E848090EA2F45B6A3A2932400 = {
 			isa = PBXGroup;
 			children = (
+				DFDDFB062EDF6D42000676A2 /* UserDataManager.swift */,
+				DFDDFAFA2EDF6CB0000676A2 /* ConfigurationManager.swift */,
+				DFDDFAFB2EDF6CB0000676A2 /* ConfigurationView.swift */,
+				DFDDFAFC2EDF6CB0000676A2 /* Environment.swift */,
+				DFDDFAFD2EDF6CB0000676A2 /* TrackerConfiguration.swift */,
+				DFDDFAFE2EDF6CB0000676A2 /* UserDefaultsKeys.swift */,
+				DFDDFAFF2EDF6CB0000676A2 /* ValidationResult.swift */,
 				74B51C0E54154217BDD735C5 /* MobileTrackerExample */,
 				4CCFB521555B4FBA85FB007901 /* Products */,
 				3E15A4C94318AC28DAF2F19A /* Pods */,
-				8DE96DCCCA782D14A210136A /* Frameworks */,
+				0AF704BD8F488DE67CEAA7F6 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		8DE96DCCCA782D14A210136A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				930622ED77D36D0D91A807FC /* Pods_MobileTrackerExample.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,11 +110,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7296A7EDB47A415581B19F67 /* Build configuration list for PBXNativeTarget "MobileTrackerExample" */;
 			buildPhases = (
-				7A740F0AD6871526F707F3A6 /* [CP] Check Pods Manifest.lock */,
+				5FE58ECC91D8F55A82DDB4A2 /* [CP] Check Pods Manifest.lock */,
 				FAD827A610E54E1B90A1855C /* Sources */,
 				B6BFBB6AF5BA434F93AE207F /* Frameworks */,
 				82B2746178274BCA928A38AA /* Resources */,
-				8B6903BA2A5CBE30C24A216C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,7 +147,7 @@
 			);
 			mainGroup = 7E848090EA2F45B6A3A2932400;
 			packageReferences = (
-				5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "ios" */,
+				5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "../../../ios" */,
 			);
 			productRefGroup = 4CCFB521555B4FBA85FB007901 /* Products */;
 			projectDirPath = "";
@@ -151,7 +170,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7A740F0AD6871526F707F3A6 /* [CP] Check Pods Manifest.lock */ = {
+		5FE58ECC91D8F55A82DDB4A2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,23 +192,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8B6903BA2A5CBE30C24A216C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MobileTrackerExample/Pods-MobileTrackerExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -199,6 +201,13 @@
 			files = (
 				9AD3E6474301456598071EB7 /* ContentView.swift in Sources */,
 				4DEB6EC3F3F746E7BC1FC6C5 /* ExampleApp.swift in Sources */,
+				DFDDFB072EDF6D42000676A2 /* UserDataManager.swift in Sources */,
+				DFDDFB002EDF6CB0000676A2 /* Environment.swift in Sources */,
+				DFDDFB012EDF6CB0000676A2 /* ConfigurationManager.swift in Sources */,
+				DFDDFB022EDF6CB0000676A2 /* TrackerConfiguration.swift in Sources */,
+				DFDDFB032EDF6CB0000676A2 /* ConfigurationView.swift in Sources */,
+				DFDDFB042EDF6CB0000676A2 /* UserDefaultsKeys.swift in Sources */,
+				DFDDFB052EDF6CB0000676A2 /* ValidationResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,13 +216,16 @@
 /* Begin XCBuildConfiguration section */
 		7296A7EDB47A415581B19F6700 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DC4B345089CFC32F4995A423 /* Pods-MobileTrackerExample.debug.xcconfig */;
+			baseConfigurationReference = B7AD246AC1EE1F0C36355CE2 /* Pods-MobileTrackerExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V69YGUAP44;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -227,8 +239,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobiletracker.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.founderos.mobiletracker.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "founder os example app";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -237,13 +251,16 @@
 		};
 		7296A7EDB47A415581B19F6701 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE8BFBDBB86BBD4B609ED32C /* Pods-MobileTrackerExample.release.xcconfig */;
+			baseConfigurationReference = BA34C60313A69BB03D76E6F1 /* Pods-MobileTrackerExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V69YGUAP44;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -257,8 +274,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobiletracker.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.founderos.mobiletracker.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "founder os example app";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -403,7 +422,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "ios" */ = {
+		5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "../../../ios" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../../ios;
 		};
@@ -412,7 +431,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		5D55843443DC4356A4341A5B /* MobileTracker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "ios" */;
+			package = 5D55843443DC4356A4341A5B00 /* XCLocalSwiftPackageReference "../../../ios" */;
 			productName = MobileTracker;
 		};
 /* End XCSwiftPackageProductDependency section */

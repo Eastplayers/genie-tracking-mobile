@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EC3E0E8EEF6E759DDC80FD6D569D9F8C"
-               BuildableName = "FounderOSMobileTracker.framework"
+               BuildableName = "FounderOSMobileTracker"
                BlueprintName = "FounderOSMobileTracker"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

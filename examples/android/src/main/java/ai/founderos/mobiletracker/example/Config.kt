@@ -29,7 +29,7 @@ object Config {
      * Debug mode flag
      */
     val debug: Boolean
-        get() = BuildConfig.DEBUG.toBoolean()
+        get() = BuildConfig.DEBUG
     
     /**
      * Validate that required configuration is present

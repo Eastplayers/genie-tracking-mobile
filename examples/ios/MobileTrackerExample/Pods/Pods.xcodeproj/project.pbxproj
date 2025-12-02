@@ -3,34 +3,29 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		EC3E0E8EEF6E759DDC80FD6D569D9F8C /* FounderOSMobileTracker */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 7CB2AD2955B0E437C80821DC06F8A88E /* Build configuration list for PBXAggregateTarget "FounderOSMobileTracker" */;
+			buildPhases = (
+			);
+			dependencies = (
+			);
+			name = FounderOSMobileTracker;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		0E4CE8203F53159CB23ACC2AD3732E6A /* LocationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D82453AAF7CE090041BEC5D8A245816 /* LocationData.swift */; };
-		1813BD51DA5A3DD993BEFFF82BBA533F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
-		187467027233B558012AE95DE052973B /* FounderOSMobileTracker-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AE52A9549253601CFDE7857F0379D5C2 /* FounderOSMobileTracker-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1BE8883FC86C66C8D498E6340197FA5A /* MobileTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B51950EF460889544FE23DBD0DA3D3 /* MobileTracker.swift */; };
-		4C82A9DB8529C16D1CD4DB429119CDFC /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129AE35DB43D4A890DF713A41A6EA8D0 /* Event.swift */; };
-		754F518B8EEC3916CBCAFC3BBADF2632 /* TrackerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 694B0C6FF80651CF2015EE29902EFB73 /* TrackerConfig.swift */; };
-		7930FC1A844CF1DD993C122EDD10C87D /* FounderOSMobileTracker-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B27E6BAF7F0F780648AEE42EBA9705 /* FounderOSMobileTracker-dummy.m */; };
-		7A877C0DFF3D271A700D78B208ACB0B5 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7570708C90217DFA6B5F78181DC5C468 /* HTTPClient.swift */; };
-		84555659395524AE92EC5CC2C84CAC4D /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECEA00D6540E8812714FD9C6FCCA04C /* DeviceInfo.swift */; };
-		89BC2FA85E26EE70DDE973A7D08E8C2A /* UpdateProfileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30EE94CF876FF7A3A7CFDE928C101F0 /* UpdateProfileData.swift */; };
-		9548191B8CA22F3869DA116E0A6CE6F8 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3927AD194AAE795448B59630FAEBECF /* StorageManager.swift */; };
-		AB9F737F5024794A8EA33ED76B6424F3 /* UserContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1189ADF900E694D4C1F57EBA7206C6 /* UserContext.swift */; };
-		B29FC76050A4E7741A03FCCFCAB6B670 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C073B4F73A4916C67D5CC50B8A68571A /* LocationManager.swift */; };
 		B2DF705C9A982BD4DBC26B293E965AC4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
-		B511615D468CFE41BF4E5083C9924BB3 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA1BF9B96772997B7BB07FC4A762F22 /* Configuration.swift */; };
-		D0EE8C3ED53A4C2B65AE7A8BB9EE0731 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046008EFD3F61EE7244AC86D9353D20D /* ApiClient.swift */; };
-		E43B7A28A6A7578B08C92E5ECAB95F1A /* Pods-MobileTrackerExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 547C0C01B7DFA5A2D395A2C11E356C8B /* Pods-MobileTrackerExample-dummy.m */; };
-		F68341B5A9C83E928D310BCD0E01D022 /* EventQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6AAD069CB2921138554967B0B0736F /* EventQueue.swift */; };
-		F738794B9FD76613C92305A0B9BC5FC5 /* EventContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9184203BC9777867A381EAB84FD85841 /* EventContext.swift */; };
-		F9AFBAEFA6F5897B339FF2B93FD80251 /* Pods-MobileTrackerExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 170C1998CFC1AA65EB5A9AD594151EDF /* Pods-MobileTrackerExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E43B7A28A6A7578B08C92E5ECAB95F1A /* Pods-MobileTrackerExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 42EB007D0BDB2606687E6C3809D66500 /* Pods-MobileTrackerExample-dummy.m */; };
+		F9AFBAEFA6F5897B339FF2B93FD80251 /* Pods-MobileTrackerExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E5396E86C80513C69636AA8CADF6CB /* Pods-MobileTrackerExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		029EEE0BF8C5FF123023A5F77B837D10 /* PBXContainerItemProxy */ = {
+		C64217CFAEA3DB0085C30D99AA8BD16A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -40,53 +35,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0197B1366B4CD9689179E11B88D1A9E1 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		046008EFD3F61EE7244AC86D9353D20D /* ApiClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ApiClient.swift; path = MobileTracker/ApiClient.swift; sourceTree = "<group>"; };
-		0FA1BF9B96772997B7BB07FC4A762F22 /* Configuration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Configuration.swift; path = MobileTracker/Configuration.swift; sourceTree = "<group>"; };
-		129AE35DB43D4A890DF713A41A6EA8D0 /* Event.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		170C1998CFC1AA65EB5A9AD594151EDF /* Pods-MobileTrackerExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MobileTrackerExample-umbrella.h"; sourceTree = "<group>"; };
-		17B27E6BAF7F0F780648AEE42EBA9705 /* FounderOSMobileTracker-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FounderOSMobileTracker-dummy.m"; sourceTree = "<group>"; };
-		2737AC63BB9312062B1258279282E2AE /* FounderOSMobileTracker-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "FounderOSMobileTracker-Info.plist"; sourceTree = "<group>"; };
+		0C857B035948A3AA81BABFE05629CC63 /* FounderOSMobileTracker.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = FounderOSMobileTracker.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1D87D95BFECAA1CE25785B7F6427B95A /* FounderOSMobileTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FounderOSMobileTracker.debug.xcconfig; sourceTree = "<group>"; };
 		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		39B51950EF460889544FE23DBD0DA3D3 /* MobileTracker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MobileTracker.swift; path = MobileTracker/MobileTracker.swift; sourceTree = "<group>"; };
-		4A1189ADF900E694D4C1F57EBA7206C6 /* UserContext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UserContext.swift; path = MobileTracker/UserContext.swift; sourceTree = "<group>"; };
-		547C0C01B7DFA5A2D395A2C11E356C8B /* Pods-MobileTrackerExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MobileTrackerExample-dummy.m"; sourceTree = "<group>"; };
-		55F1EF7785718CCCF62FE7CD9E1758EC /* FounderOSMobileTracker.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FounderOSMobileTracker.modulemap; sourceTree = "<group>"; };
-		5D82453AAF7CE090041BEC5D8A245816 /* LocationData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LocationData.swift; sourceTree = "<group>"; };
-		694B0C6FF80651CF2015EE29902EFB73 /* TrackerConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrackerConfig.swift; sourceTree = "<group>"; };
-		6CF83FC67FFB5ED6490151506E5EA1C9 /* FounderOSMobileTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FounderOSMobileTracker.debug.xcconfig; sourceTree = "<group>"; };
-		7570708C90217DFA6B5F78181DC5C468 /* HTTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPClient.swift; path = MobileTracker/HTTPClient.swift; sourceTree = "<group>"; };
-		7DD75521D8E0F567CC8D87E349E0D1B7 /* Pods-MobileTrackerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MobileTrackerExample.debug.xcconfig"; sourceTree = "<group>"; };
-		82C10D3266EA1EBF75F1AD2BEB97A485 /* FounderOSMobileTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FounderOSMobileTracker.release.xcconfig; sourceTree = "<group>"; };
-		867F624BC57B9F1224F5DD526D5D6B53 /* FounderOSMobileTracker-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FounderOSMobileTracker-prefix.pch"; sourceTree = "<group>"; };
-		9184203BC9777867A381EAB84FD85841 /* EventContext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventContext.swift; sourceTree = "<group>"; };
-		93005B046D0CA24D007FCA14C233A4D4 /* FounderOSMobileTracker.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = FounderOSMobileTracker.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		94CAEDDF4BB12A7DA078A8BB622F71CF /* FounderOSMobileTracker */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FounderOSMobileTracker; path = FounderOSMobileTracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D6AAD069CB2921138554967B0B0736F /* EventQueue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventQueue.swift; path = MobileTracker/EventQueue.swift; sourceTree = "<group>"; };
+		42EB007D0BDB2606687E6C3809D66500 /* Pods-MobileTrackerExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MobileTrackerExample-dummy.m"; sourceTree = "<group>"; };
+		4F00B4C40B4D5DF0EB4443A5F5B2F1F0 /* Pods-MobileTrackerExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MobileTrackerExample-acknowledgements.markdown"; sourceTree = "<group>"; };
+		588B87323864AADA790111B0169B6AE2 /* FounderOSMobileTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FounderOSMobileTracker.release.xcconfig; sourceTree = "<group>"; };
+		716D10D0D3142858F52914EFBB13B818 /* Pods-MobileTrackerExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-MobileTrackerExample.modulemap"; sourceTree = "<group>"; };
+		85E5396E86C80513C69636AA8CADF6CB /* Pods-MobileTrackerExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MobileTrackerExample-umbrella.h"; sourceTree = "<group>"; };
+		87B8A4104B0980982F4D609C5B24B1CA /* Pods-MobileTrackerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MobileTrackerExample.debug.xcconfig"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9ECEA00D6540E8812714FD9C6FCCA04C /* DeviceInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
-		A30EE94CF876FF7A3A7CFDE928C101F0 /* UpdateProfileData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UpdateProfileData.swift; sourceTree = "<group>"; };
-		A3129BB63527E9490623E6272D597E78 /* Pods-MobileTrackerExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MobileTrackerExample-acknowledgements.plist"; sourceTree = "<group>"; };
 		A977B89275B96B6FCA48DDCFA29050F3 /* Pods-MobileTrackerExample */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-MobileTrackerExample"; path = Pods_MobileTrackerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE52A9549253601CFDE7857F0379D5C2 /* FounderOSMobileTracker-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FounderOSMobileTracker-umbrella.h"; sourceTree = "<group>"; };
-		B136CC184213206501386BE492C96519 /* Pods-MobileTrackerExample-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MobileTrackerExample-Info.plist"; sourceTree = "<group>"; };
-		B27B9CAC329405A2886605DD87349F1A /* Pods-MobileTrackerExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-MobileTrackerExample.modulemap"; sourceTree = "<group>"; };
-		B55B682324D0601F95A6A59B0C99F952 /* Pods-MobileTrackerExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MobileTrackerExample-frameworks.sh"; sourceTree = "<group>"; };
-		C073B4F73A4916C67D5CC50B8A68571A /* LocationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationManager.swift; path = MobileTracker/LocationManager.swift; sourceTree = "<group>"; };
-		C267478A1DF6766EE7C1B900E5D9CCA8 /* Pods-MobileTrackerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MobileTrackerExample.release.xcconfig"; sourceTree = "<group>"; };
-		C3C5A5E0DA8E4F0F7BBFAF4B7CB3630C /* Pods-MobileTrackerExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MobileTrackerExample-acknowledgements.markdown"; sourceTree = "<group>"; };
-		E3927AD194AAE795448B59630FAEBECF /* StorageManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StorageManager.swift; path = MobileTracker/StorageManager.swift; sourceTree = "<group>"; };
+		D32674A87A41FBD41835BC270EDA758D /* Pods-MobileTrackerExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MobileTrackerExample-acknowledgements.plist"; sourceTree = "<group>"; };
+		DF058FBD7F53886D2738462A83169130 /* Pods-MobileTrackerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MobileTrackerExample.release.xcconfig"; sourceTree = "<group>"; };
+		EEFEC8E082C5828EED808A21E3FD6FAD /* Pods-MobileTrackerExample-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MobileTrackerExample-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		41DC4667F408D967FB8E902B4F276C2B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1813BD51DA5A3DD993BEFFF82BBA533F /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		65C6BA7939494C5DC58BF7B1F453CDBE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -98,27 +63,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2D8B47953A7D50BFDB7CCBF6BC2DD97B /* Pod */ = {
+		3AA7315E82543015D03D4BDAE10EF01B /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				93005B046D0CA24D007FCA14C233A4D4 /* FounderOSMobileTracker.podspec */,
-				0197B1366B4CD9689179E11B88D1A9E1 /* LICENSE */,
+				0C857B035948A3AA81BABFE05629CC63 /* FounderOSMobileTracker.podspec */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
 		};
-		7704FFBF0FC0D7B27A19BB4F50A3461C /* Targets Support Files */ = {
+		3E8A005569FDF7AAD0A1341AB26B5C4A /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				DB587E173E44C4DEE7945A6BA5135ABB /* Pods-MobileTrackerExample */,
+				E29B18513CB14BFC7F55B1A75090F73E /* Pods-MobileTrackerExample */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		C0B50C17C23A8B06586BE04FB90D944B /* Products */ = {
+		433125F84FA3BF736FA7FE085CA4F717 /* FounderOSMobileTracker */ = {
 			isa = PBXGroup;
 			children = (
-				94CAEDDF4BB12A7DA078A8BB622F71CF /* FounderOSMobileTracker */,
+				3AA7315E82543015D03D4BDAE10EF01B /* Pod */,
+				8A8ED61EC3EDD47A5231C8E7978C8151 /* Support Files */,
+			);
+			name = FounderOSMobileTracker;
+			path = ../../../../ios;
+			sourceTree = "<group>";
+		};
+		782EF989665156D205F191CB8D43E8DA /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				433125F84FA3BF736FA7FE085CA4F717 /* FounderOSMobileTracker */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		8A8ED61EC3EDD47A5231C8E7978C8151 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				1D87D95BFECAA1CE25785B7F6427B95A /* FounderOSMobileTracker.debug.xcconfig */,
+				588B87323864AADA790111B0169B6AE2 /* FounderOSMobileTracker.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../examples/ios/MobileTrackerExample/Pods/Target Support Files/FounderOSMobileTracker";
+			sourceTree = "<group>";
+		};
+		95F0370393A52612A96D0B0A5FD85DC6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
 				A977B89275B96B6FCA48DDCFA29050F3 /* Pods-MobileTrackerExample */,
 			);
 			name = Products;
@@ -128,10 +119,10 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				DFD3F275548851CFBD5035EE287A4039 /* Development Pods */,
+				782EF989665156D205F191CB8D43E8DA /* Development Pods */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				C0B50C17C23A8B06586BE04FB90D944B /* Products */,
-				7704FFBF0FC0D7B27A19BB4F50A3461C /* Targets Support Files */,
+				95F0370393A52612A96D0B0A5FD85DC6 /* Products */,
+				3E8A005569FDF7AAD0A1341AB26B5C4A /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,43 +134,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D327DC510E48A4C96944CA6797C032A3 /* Models */ = {
+		E29B18513CB14BFC7F55B1A75090F73E /* Pods-MobileTrackerExample */ = {
 			isa = PBXGroup;
 			children = (
-				9ECEA00D6540E8812714FD9C6FCCA04C /* DeviceInfo.swift */,
-				129AE35DB43D4A890DF713A41A6EA8D0 /* Event.swift */,
-				9184203BC9777867A381EAB84FD85841 /* EventContext.swift */,
-				5D82453AAF7CE090041BEC5D8A245816 /* LocationData.swift */,
-				694B0C6FF80651CF2015EE29902EFB73 /* TrackerConfig.swift */,
-				A30EE94CF876FF7A3A7CFDE928C101F0 /* UpdateProfileData.swift */,
-			);
-			name = Models;
-			path = MobileTracker/Models;
-			sourceTree = "<group>";
-		};
-		DB587E173E44C4DEE7945A6BA5135ABB /* Pods-MobileTrackerExample */ = {
-			isa = PBXGroup;
-			children = (
-				B27B9CAC329405A2886605DD87349F1A /* Pods-MobileTrackerExample.modulemap */,
-				C3C5A5E0DA8E4F0F7BBFAF4B7CB3630C /* Pods-MobileTrackerExample-acknowledgements.markdown */,
-				A3129BB63527E9490623E6272D597E78 /* Pods-MobileTrackerExample-acknowledgements.plist */,
-				547C0C01B7DFA5A2D395A2C11E356C8B /* Pods-MobileTrackerExample-dummy.m */,
-				B55B682324D0601F95A6A59B0C99F952 /* Pods-MobileTrackerExample-frameworks.sh */,
-				B136CC184213206501386BE492C96519 /* Pods-MobileTrackerExample-Info.plist */,
-				170C1998CFC1AA65EB5A9AD594151EDF /* Pods-MobileTrackerExample-umbrella.h */,
-				7DD75521D8E0F567CC8D87E349E0D1B7 /* Pods-MobileTrackerExample.debug.xcconfig */,
-				C267478A1DF6766EE7C1B900E5D9CCA8 /* Pods-MobileTrackerExample.release.xcconfig */,
+				716D10D0D3142858F52914EFBB13B818 /* Pods-MobileTrackerExample.modulemap */,
+				4F00B4C40B4D5DF0EB4443A5F5B2F1F0 /* Pods-MobileTrackerExample-acknowledgements.markdown */,
+				D32674A87A41FBD41835BC270EDA758D /* Pods-MobileTrackerExample-acknowledgements.plist */,
+				42EB007D0BDB2606687E6C3809D66500 /* Pods-MobileTrackerExample-dummy.m */,
+				EEFEC8E082C5828EED808A21E3FD6FAD /* Pods-MobileTrackerExample-Info.plist */,
+				85E5396E86C80513C69636AA8CADF6CB /* Pods-MobileTrackerExample-umbrella.h */,
+				87B8A4104B0980982F4D609C5B24B1CA /* Pods-MobileTrackerExample.debug.xcconfig */,
+				DF058FBD7F53886D2738462A83169130 /* Pods-MobileTrackerExample.release.xcconfig */,
 			);
 			name = "Pods-MobileTrackerExample";
 			path = "Target Support Files/Pods-MobileTrackerExample";
-			sourceTree = "<group>";
-		};
-		DFD3F275548851CFBD5035EE287A4039 /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E9CD6C1DD162F8B5D74278B5AA43307E /* FounderOSMobileTracker */,
-			);
-			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 		E4801F62A6B08CD9B5410329F1A18FDE /* iOS */ = {
@@ -190,40 +158,6 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		E9CD6C1DD162F8B5D74278B5AA43307E /* FounderOSMobileTracker */ = {
-			isa = PBXGroup;
-			children = (
-				046008EFD3F61EE7244AC86D9353D20D /* ApiClient.swift */,
-				0FA1BF9B96772997B7BB07FC4A762F22 /* Configuration.swift */,
-				9D6AAD069CB2921138554967B0B0736F /* EventQueue.swift */,
-				7570708C90217DFA6B5F78181DC5C468 /* HTTPClient.swift */,
-				C073B4F73A4916C67D5CC50B8A68571A /* LocationManager.swift */,
-				39B51950EF460889544FE23DBD0DA3D3 /* MobileTracker.swift */,
-				E3927AD194AAE795448B59630FAEBECF /* StorageManager.swift */,
-				4A1189ADF900E694D4C1F57EBA7206C6 /* UserContext.swift */,
-				D327DC510E48A4C96944CA6797C032A3 /* Models */,
-				2D8B47953A7D50BFDB7CCBF6BC2DD97B /* Pod */,
-				FE5A273A94AB188E07AB1E3E616EC207 /* Support Files */,
-			);
-			name = FounderOSMobileTracker;
-			path = ../../../../ios;
-			sourceTree = "<group>";
-		};
-		FE5A273A94AB188E07AB1E3E616EC207 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				55F1EF7785718CCCF62FE7CD9E1758EC /* FounderOSMobileTracker.modulemap */,
-				17B27E6BAF7F0F780648AEE42EBA9705 /* FounderOSMobileTracker-dummy.m */,
-				2737AC63BB9312062B1258279282E2AE /* FounderOSMobileTracker-Info.plist */,
-				867F624BC57B9F1224F5DD526D5D6B53 /* FounderOSMobileTracker-prefix.pch */,
-				AE52A9549253601CFDE7857F0379D5C2 /* FounderOSMobileTracker-umbrella.h */,
-				6CF83FC67FFB5ED6490151506E5EA1C9 /* FounderOSMobileTracker.debug.xcconfig */,
-				82C10D3266EA1EBF75F1AD2BEB97A485 /* FounderOSMobileTracker.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../examples/ios/MobileTrackerExample/Pods/Target Support Files/FounderOSMobileTracker";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -232,14 +166,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9AFBAEFA6F5897B339FF2B93FD80251 /* Pods-MobileTrackerExample-umbrella.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		20AA8146BC3F03A9730E61154B850C60 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				187467027233B558012AE95DE052973B /* FounderOSMobileTracker-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,29 +184,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				9BD1244054BAD202B76726A56830E996 /* PBXTargetDependency */,
+				A03FE00338A2331180AF1C9C9280DC5E /* PBXTargetDependency */,
 			);
 			name = "Pods-MobileTrackerExample";
 			productName = Pods_MobileTrackerExample;
 			productReference = A977B89275B96B6FCA48DDCFA29050F3 /* Pods-MobileTrackerExample */;
-			productType = "com.apple.product-type.framework";
-		};
-		EC3E0E8EEF6E759DDC80FD6D569D9F8C /* FounderOSMobileTracker */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8500F695A66C48212E22800A8A217B04 /* Build configuration list for PBXNativeTarget "FounderOSMobileTracker" */;
-			buildPhases = (
-				20AA8146BC3F03A9730E61154B850C60 /* Headers */,
-				722B845BE1ECFA059D1B194AC70FDC8E /* Sources */,
-				41DC4667F408D967FB8E902B4F276C2B /* Frameworks */,
-				E571602656C6032BC4DDE3B8C76530E8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FounderOSMobileTracker;
-			productName = FounderOSMobileTracker;
-			productReference = 94CAEDDF4BB12A7DA078A8BB622F71CF /* FounderOSMobileTracker */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -293,7 +201,7 @@
 				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -303,7 +211,7 @@
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
 			minimizedProjectReferenceProxies = 0;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = C0B50C17C23A8B06586BE04FB90D944B /* Products */;
+			productRefGroup = 95F0370393A52612A96D0B0A5FD85DC6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -321,13 +229,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E571602656C6032BC4DDE3B8C76530E8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -339,43 +240,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		722B845BE1ECFA059D1B194AC70FDC8E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D0EE8C3ED53A4C2B65AE7A8BB9EE0731 /* ApiClient.swift in Sources */,
-				B511615D468CFE41BF4E5083C9924BB3 /* Configuration.swift in Sources */,
-				84555659395524AE92EC5CC2C84CAC4D /* DeviceInfo.swift in Sources */,
-				4C82A9DB8529C16D1CD4DB429119CDFC /* Event.swift in Sources */,
-				F738794B9FD76613C92305A0B9BC5FC5 /* EventContext.swift in Sources */,
-				F68341B5A9C83E928D310BCD0E01D022 /* EventQueue.swift in Sources */,
-				7930FC1A844CF1DD993C122EDD10C87D /* FounderOSMobileTracker-dummy.m in Sources */,
-				7A877C0DFF3D271A700D78B208ACB0B5 /* HTTPClient.swift in Sources */,
-				0E4CE8203F53159CB23ACC2AD3732E6A /* LocationData.swift in Sources */,
-				B29FC76050A4E7741A03FCCFCAB6B670 /* LocationManager.swift in Sources */,
-				1BE8883FC86C66C8D498E6340197FA5A /* MobileTracker.swift in Sources */,
-				9548191B8CA22F3869DA116E0A6CE6F8 /* StorageManager.swift in Sources */,
-				754F518B8EEC3916CBCAFC3BBADF2632 /* TrackerConfig.swift in Sources */,
-				89BC2FA85E26EE70DDE973A7D08E8C2A /* UpdateProfileData.swift in Sources */,
-				AB9F737F5024794A8EA33ED76B6424F3 /* UserContext.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9BD1244054BAD202B76726A56830E996 /* PBXTargetDependency */ = {
+		A03FE00338A2331180AF1C9C9280DC5E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FounderOSMobileTracker;
 			target = EC3E0E8EEF6E759DDC80FD6D569D9F8C /* FounderOSMobileTracker */;
-			targetProxy = 029EEE0BF8C5FF123023A5F77B837D10 /* PBXContainerItemProxy */;
+			targetProxy = C64217CFAEA3DB0085C30D99AA8BD16A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		30727BB18BB5502EADB3CF2E285CFB9D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D87D95BFECAA1CE25785B7F6427B95A /* FounderOSMobileTracker.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		34EA815E36561B38BD2DE87740DAB2B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DD75521D8E0F567CC8D87E349E0D1B7 /* Pods-MobileTrackerExample.debug.xcconfig */;
+			baseConfigurationReference = 87B8A4104B0980982F4D609C5B24B1CA /* Pods-MobileTrackerExample.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -406,85 +303,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		495A8FAB8FFDADAB1D1EFDC1943CABCA /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 82C10D3266EA1EBF75F1AD2BEB97A485 /* FounderOSMobileTracker.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/FounderOSMobileTracker/FounderOSMobileTracker-prefix.pch";
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FounderOSMobileTracker/FounderOSMobileTracker-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/FounderOSMobileTracker/FounderOSMobileTracker.modulemap";
-				PRODUCT_MODULE_NAME = FounderOSMobileTracker;
-				PRODUCT_NAME = FounderOSMobileTracker;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.5;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		4AA2131ECD82B7B214A74543FF3197C2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CF83FC67FFB5ED6490151506E5EA1C9 /* FounderOSMobileTracker.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/FounderOSMobileTracker/FounderOSMobileTracker-prefix.pch";
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FounderOSMobileTracker/FounderOSMobileTracker-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/FounderOSMobileTracker/FounderOSMobileTracker.modulemap";
-				PRODUCT_MODULE_NAME = FounderOSMobileTracker;
-				PRODUCT_NAME = FounderOSMobileTracker;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.5;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -621,7 +439,7 @@
 		};
 		D71695DFF9F771CC6DBF8AECE729B110 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C267478A1DF6766EE7C1B900E5D9CCA8 /* Pods-MobileTrackerExample.release.xcconfig */;
+			baseConfigurationReference = DF058FBD7F53886D2738462A83169130 /* Pods-MobileTrackerExample.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -659,6 +477,25 @@
 			};
 			name = Release;
 		};
+		D7283DEF789272D238C3B2CB1DCE707C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 588B87323864AADA790111B0169B6AE2 /* FounderOSMobileTracker.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -671,11 +508,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8500F695A66C48212E22800A8A217B04 /* Build configuration list for PBXNativeTarget "FounderOSMobileTracker" */ = {
+		7CB2AD2955B0E437C80821DC06F8A88E /* Build configuration list for PBXAggregateTarget "FounderOSMobileTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4AA2131ECD82B7B214A74543FF3197C2 /* Debug */,
-				495A8FAB8FFDADAB1D1EFDC1943CABCA /* Release */,
+				30727BB18BB5502EADB3CF2E285CFB9D /* Debug */,
+				D7283DEF789272D238C3B2CB1DCE707C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
