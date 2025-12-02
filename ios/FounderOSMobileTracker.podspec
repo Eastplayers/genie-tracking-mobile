@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'FounderOSMobileTracker'
-  s.version          = '0.1.1'
+  s.version          = '0.1.3'
   s.summary          = 'Mobile Tracking SDK by founder-os.ai'
   s.description      = <<-DESC
     A cross-platform analytics and event tracking SDK for iOS applications.

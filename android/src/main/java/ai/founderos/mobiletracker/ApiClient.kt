@@ -663,7 +663,7 @@ class ApiClient(
             val payload = buildJsonObject {
                 put("brand_id", JsonPrimitive(brandId))
                 put("session_id", JsonPrimitive(sessionId))
-                put("event_name", JsonPrimitive(eventName))
+                put("event_name", JsonPrimitive(eventName.uppercase().replace(" ", "_")))
                 eventData?.let { data ->
                     put("data", buildJsonObject {
                         data.forEach { (key, value) ->
@@ -696,12 +696,19 @@ class ApiClient(
                         }
                     })
                 }
+                
+                // Add flow_context for non-VIEW_PAGE events (web behavior)
+                // Detect current active screen name and use that as url
+                if (eventName != "VIEW_PAGE") {
+                    val currentActivity = getCurrentActivityName()
+                    if (currentActivity != null) {
+                        put("flow_context", buildJsonObject {
+                            put("url", JsonPrimitive(currentActivity))
+                            put("title", JsonPrimitive(currentActivity))
+                        })
+                    }
+                }
             }
-            
-            // Add flow_context for non-VIEW_PAGE events (web behavior)
-            // Note: Android doesn't have window.location.href or sessionStorage
-            // We'll skip flow_context for now or implement it differently
-            
             val jsonPayload = payload.toString()
             
             val requestBody = jsonPayload.toRequestBody(JSON_MEDIA_TYPE)
@@ -837,6 +844,28 @@ class ApiClient(
      */
     fun clearCookieByName(name: String, domain: String? = null) {
         clearCookie(name, domain ?: config.cookieDomain)
+    }
+    
+    /**
+     * Get the current activity name for screen tracking
+     * Returns the simple class name of the current activity
+     */
+    private fun getCurrentActivityName(): String? {
+        return try {
+            val activityManager = context.getSystemService(android.content.Context.ACTIVITY_SERVICE) as? android.app.ActivityManager
+            val tasks = activityManager?.getRunningTasks(1)
+            if (!tasks.isNullOrEmpty()) {
+                val topActivity = tasks[0].topActivity
+                topActivity?.shortClassName?.substringAfterLast('.')
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            if (config.debug) {
+                println("[ApiClient] Error getting current activity name: ${e.message}")
+            }
+            null
+        }
     }
 }
 

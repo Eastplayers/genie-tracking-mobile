@@ -500,7 +500,7 @@ class ApiClient {
             var payload: [String: Any] = [
                 "brand_id": brandId,
                 "session_id": sessionId,
-                "event_name": eventName
+                "event_name": eventName.uppercased().replacingOccurrences(of: " ", with: "_")
             ]
             
             if let eventData = eventData {
@@ -508,12 +508,19 @@ class ApiClient {
             }
             
             // Add flow_context for non-VIEW_PAGE events (matching web behavior)
-            // Web Reference: api.ts lines 508-510
+            // Detect current active screen name and use that as url
             if eventName != "VIEW_PAGE" {
-                payload["flow_context"] = [
-                    "url": "",  // iOS doesn't have window.location.href
-                    "room_id": NSNull()  // iOS doesn't have sessionStorage
-                ]
+                if let currentScreen = getCurrentScreenName() {
+                    payload["flow_context"] = [
+                        "url": currentScreen,
+                        "title": currentScreen
+                    ]
+                } else {
+                    payload["flow_context"] = [
+                        "url": "",
+                        "room_id": NSNull()
+                    ]
+                }
             }
             
             var request = URLRequest(url: url)
@@ -594,5 +601,40 @@ class ApiClient {
     /// Web Reference: api.ts lines 513-517
     func setBrandId(_ brandId: Int) {
         writeCookie("brand_id", value: String(brandId), expires: 365, domain: config.cookieDomain)
+    }
+    
+    /// Get the current screen name for screen tracking
+    /// Returns the simple class name of the current view controller
+    private func getCurrentScreenName() -> String? {
+        #if canImport(UIKit)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let rootViewController = window.rootViewController else {
+            return nil
+        }
+        
+        var currentViewController = rootViewController
+        
+        // Traverse through navigation and tab controllers to find the actual view controller
+        while let presentedViewController = currentViewController.presentedViewController {
+            currentViewController = presentedViewController
+        }
+        
+        if let navigationController = currentViewController as? UINavigationController {
+            currentViewController = navigationController.visibleViewController ?? currentViewController
+        }
+        
+        if let tabBarController = currentViewController as? UITabBarController {
+            if let selectedViewController = tabBarController.selectedViewController {
+                currentViewController = selectedViewController
+            }
+        }
+        
+        // Get the simple class name without module prefix
+        let className = String(describing: type(of: currentViewController))
+        return className
+        #else
+        return nil
+        #endif
     }
 }

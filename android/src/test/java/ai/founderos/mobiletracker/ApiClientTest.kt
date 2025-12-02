@@ -7,8 +7,9 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -24,10 +25,11 @@ import kotlin.test.assertTrue
  * - Profile updates
  * - Storage operations
  */
+@RunWith(RobolectricTestRunner::class)
 class ApiClientTest {
     
     private lateinit var mockWebServer: MockWebServer
-    private lateinit var mockContext: Context
+    private lateinit var context: Context
     private lateinit var apiClient: ApiClient
     
     @Before
@@ -35,15 +37,7 @@ class ApiClientTest {
         mockWebServer = MockWebServer()
         mockWebServer.start()
         
-        mockContext = mock(Context::class.java)
-        val mockResources = mock(android.content.res.Resources::class.java)
-        val mockConfiguration = mock(android.content.res.Configuration::class.java)
-        
-        `when`(mockContext.resources).thenReturn(mockResources)
-        `when`(mockResources.configuration).thenReturn(mockConfiguration)
-        `when`(mockContext.filesDir).thenReturn(java.io.File(System.getProperty("java.io.tmpdir")))
-        
-        mockConfiguration.screenLayout = android.content.res.Configuration.SCREENLAYOUT_SIZE_NORMAL
+        context = RuntimeEnvironment.getApplication()
         
         val config = TrackerConfig(
             debug = true,
@@ -51,7 +45,7 @@ class ApiClientTest {
             xApiKey = "test-api-key"
         )
         
-        apiClient = ApiClient(config, "123", mockContext)
+        apiClient = ApiClient(config, "123", context)
     }
     
     @After

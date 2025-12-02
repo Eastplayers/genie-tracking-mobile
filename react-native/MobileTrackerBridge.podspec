@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   # The Podfile in the example app uses :path to override this with the local SDK
   
   # Version requirement
-  s.dependency "FounderOSMobileTracker", "~> 0.1.0"
+  s.dependency "FounderOSMobileTracker", "~> 0.1.3"
   
   # To switch between configurations:
   # 1. Run 'pod install' in your app directory

@@ -79,8 +79,10 @@ class HTTPClientTest {
         // Verify request
         val request = mockServer.takeRequest()
         assertEquals("POST", request.method)
-        assertEquals("application/json", request.getHeader("Content-Type"))
-        assertEquals("test-api-key", request.getHeader("X-API-Key"))
+        // Content-Type includes charset
+        assertTrue(request.getHeader("Content-Type")?.startsWith("application/json") == true)
+        // OkHttp normalizes header names to lowercase
+        assertEquals("test-api-key", request.getHeader("x-api-key"))
         assertNotNull(request.body)
     }
     

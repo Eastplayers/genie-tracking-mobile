@@ -1,6 +1,6 @@
 {
   "name": "founder-os-tracker-react-native",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native bridge for Mobile Tracking SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -43,6 +43,8 @@
     "react-native": ">=0.70.0"
   },
   "devDependencies": {
+    "@fast-check/jest": "^1.1.1",
+    "@react-native-async-storage/async-storage": "^1.21.0",
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.25",
     "@types/react-native": "^0.72.3",
@@ -54,7 +56,8 @@
     "typescript": "^5.2.2"
   },
   "jest": {
-    "preset": "react-native",
+    "preset": "ts-jest",
+    "testEnvironment": "node",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -71,7 +74,16 @@
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
       "!src/**/*.d.ts"
-    ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsconfig": {
+          "jsx": "react",
+          "esModuleInterop": true,
+          "allowSyntheticDefaultImports": true
+        }
+      }
+    }
   },
   "react-native": {
     "ios": "./ios",
